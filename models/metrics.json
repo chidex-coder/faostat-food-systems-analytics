@@ -2,6 +2,14 @@
   "panel_rows": 6162,
   "panel_countries": 183,
   "seed": 2026,
+  "model_card": "models/MODEL_CARD.md",
+  "intended_use": "Exploratory screening and planning support on FAO statistics. All models are descriptive, not causal; none should allocate resources or trigger action without human review of the country context.",
+  "limitations": [
+    "Targets are FAO estimates (yield: 45 % official / 53 % estimated-imputed rows; PoU: fully modelled), so the models learn FAO's methodology as much as the world.",
+    "Time-based validation covers 2017-2024 only; structural breaks (conflict, pandemic, price shocks) are under-represented.",
+    "Country-years are not independent samples; reported metrics are optimistic for a never-seen country.",
+    "The risk classifier threshold (PoU >= 15 %) is FAO's 'moderately high' boundary, chosen for interpretability, not optimised for any decision cost."
+  ],
   "yield_forecast": {
     "task": "One-step-ahead cereal yield (t/ha), countries with >= 20 kha harvested",
     "split": "train < 2019, test >= 2019",

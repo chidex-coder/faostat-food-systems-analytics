@@ -20,6 +20,8 @@ def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--skip-extract", action="store_true", help="do not re-download FAOSTAT archives")
     ap.add_argument("--only", nargs="+", choices=STAGES, help="run only these stages")
+    ap.add_argument("--update-pins", action="store_true",
+                    help="accept archives whose hash differs from data/reference/archive_pins.json (new FAO release)")
     args = ap.parse_args()
     stages = args.only or STAGES
     if args.skip_extract and "extract" in stages:
@@ -29,7 +31,7 @@ def main() -> int:
         print(f"\n== {stage} ==")
         ts = time.time()
         if stage == "extract":
-            extract.extract_bulk()
+            extract.extract_bulk(accept_new_releases=args.update_pins)
         elif stage == "load":
             load.load_all()
         elif stage == "quality":

@@ -3,6 +3,16 @@
 The page is a single self-contained HTML file: Plotly.js from a CDN, all data
 inlined as JSON so it works from file://, GitHub Pages or any static host with
 no backend. Data are packed as column-oriented arrays to keep the file small.
+
+Publication boundary
+--------------------
+Everything inlined here is readable by anyone with the URL (view-source). That
+is fine for this project because every input is FAO's public data - but the
+pattern would leak anything else. `PUBLISHABLE` is therefore an explicit
+allowlist of the top-level blocks and per-record fields the page may carry;
+`assert_publishable()` refuses to build if a new field appears that has not
+been reviewed, and `meta.data_classification` states the classification on
+the page itself.
 """
 from __future__ import annotations
 
@@ -15,8 +25,51 @@ import numpy as np
 import pandas as pd
 
 from .config import DB_PATH, DOCS_DIR, DOCS_DATA_DIR, FIGURES_DIR, MODELS_DIR, REPORTS_DIR
+from .web import PLOTLY_JS_URL, PLOTLY_SCRIPT_TAG
 
 AGG = {5000: "World", 5100: "Africa", 5200: "Americas", 5300: "Asia", 5400: "Europe", 5500: "Oceania"}
+
+DATA_CLASSIFICATION = "public"   # FAO open data + derived aggregates; nothing person-level, nothing licensed
+
+# Allowlist of what the page may contain. Top-level block -> allowed record fields
+# (None = the block is a fixed structure checked elsewhere / has no records).
+PUBLISHABLE: dict[str, set[str] | None] = {
+    "meta": None, "indicators": None, "panel": None, "crops": None, "answers": None, "metrics": None, "yield_test": None,
+    "areas": {"area_code", "area", "iso3", "region", "subregion", "is_aggregate", "is_ldc", "is_lldc", "is_sids"},
+    "manifest": {"domain", "name", "source_file", "source_url", "sha256", "server_last_modified", "catalogue_date_update",
+                 "downloaded_at", "rows_raw", "rows_loaded", "rows_dropped_missing", "rows_dropped_filter", "rows_dropped_dupe", "notes"},
+    "dq": {"domain", "check_name", "status", "observed", "threshold", "detail"},
+    "flags": {"domain", "flag", "description", "n"},
+    "forecasts": {"area", "region", "year", "forecast_t_ha", "change_pct", "cereal_area_ha"},   # + yield_<year>_t_ha
+    "risk": {"area", "region", "year", "risk_score", "observed_pou_pct"},
+    "typology": {"area_code", "area", "region", "cluster", "cluster_name", "pc1", "pc2"},          # + indicator columns
+    "projections": {"region", "year", "projected_mt", "lower_mt", "upper_mt"},
+}
+
+
+def assert_publishable(data: dict) -> None:
+    """Refuse to build a page that carries an unreviewed block or field."""
+    unknown_blocks = set(data) - set(PUBLISHABLE)
+    if unknown_blocks:
+        raise ValueError(f"dashboard data contains unreviewed top-level blocks: {sorted(unknown_blocks)}")
+    typology_ok = set(PUBLISHABLE["typology"]) | {"cereal_yield_t_ha", "n_kg_per_ha", "cereal_kg_per_cap", "cereal_import_dep_pct", "pou_pct",
+                                                  "obesity_pct", "agrifood_t_per_cap", "urban_share", "log_gdp_cap", "forest_share",
+                                                  "cropland_share", "unaffordable_pct"}
+    for block, allowed in PUBLISHABLE.items():
+        if allowed is None or block not in data:
+            continue
+        fields = {k for rec in data[block] for k in rec}
+        if block == "typology":
+            extra = fields - typology_ok
+        elif block == "forecasts":
+            extra = {f for f in fields - allowed if not f.startswith("yield_")}
+        else:
+            extra = fields - allowed
+        if extra:
+            raise ValueError(f"dashboard block '{block}' carries unreviewed fields {sorted(extra)}; "
+                             f"review them for publication and add to PUBLISHABLE")
+    if data["meta"].get("data_classification") != "public":
+        raise ValueError("only data classified 'public' may be inlined into the dashboard")
 
 INDICATORS = {
     # key: (label, unit, group, better, decimals)
@@ -141,6 +194,7 @@ def build_data(con: sqlite3.Connection) -> dict:
     latest_years = {k: int(panel.loc[panel[k].notna() & (panel.is_aggregate == 0), "year"].max()) for k in ind_cols if panel[k].notna().any()}
     return {
         "meta": {"built_at": datetime.now(timezone.utc).isoformat(timespec="seconds"), "latest_years": latest_years,
+                 "data_classification": DATA_CLASSIFICATION, "plotly_js": PLOTLY_JS_URL,
                  "year_min": int(panel.year.min()), "year_max": int(panel.year.max()), "n_countries": int((areas.is_aggregate == 0).sum()),
                  "n_observations": int(con.execute("SELECT COUNT(*) FROM observation").fetchone()[0])},
         "indicators": {k: {"label": v[0], "unit": v[1], "group": v[2], "better": v[3], "dp": v[4]} for k, v in INDICATORS.items()},
@@ -166,6 +220,7 @@ def build(db_path=DB_PATH) -> None:
     con = sqlite3.connect(db_path)
     data = build_data(con)
     con.close()
+    assert_publishable(data)
     payload = json.dumps(data, separators=(",", ":"), allow_nan=False)
     (DOCS_DATA_DIR / "dashboard_data.json").write_text(payload)
     # copy figures so the Pages site can link to them
@@ -174,7 +229,7 @@ def build(db_path=DB_PATH) -> None:
     for f in FIGURES_DIR.glob("*.html"):
         shutil.copy(f, fig_dir / f.name)
     template = (DOCS_DIR / "template.html").read_text()
-    html = template.replace("/*__DATA__*/", "window.DATA = " + payload + ";")
+    html = template.replace("/*__DATA__*/", "window.DATA = " + payload + ";").replace("<!--__PLOTLY_SCRIPT__-->", PLOTLY_SCRIPT_TAG)
     (DOCS_DIR / "index.html").write_text(html)
     print(f"  dashboard written: {len(html) / 1e6:.1f} MB, {len(list(fig_dir.glob('*.html')))} figures copied")
 

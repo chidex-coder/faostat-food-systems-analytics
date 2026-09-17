@@ -1,0 +1,65 @@
+{
+  "CAHD": {
+    "sha256": "299e15188c24c69a7f5d488ccaee283ef4d99bba995bc6cf095b748134d35fd3",
+    "bytes": 88131,
+    "server_last_modified": "Tue, 21 Jul 2026 09:54:45 GMT",
+    "catalogue_date_update": "2026-07-21T00:00:00",
+    "pinned_at": "2026-09-17T18:35:45+00:00"
+  },
+  "ET": {
+    "sha256": "1acf303d3d9463e498231b74fe82c2a13ef26547d37880e10b4e5a6a25870991",
+    "bytes": 3541208,
+    "server_last_modified": "Wed, 01 Apr 2026 13:18:24 GMT",
+    "catalogue_date_update": "2026-04-01T00:00:00",
+    "pinned_at": "2026-09-17T18:35:41+00:00"
+  },
+  "FS": {
+    "sha256": "1ccced40d8e228693c6fcc5d172de9bcaa3a1c6a1581ebde345d71c1dfa9b692",
+    "bytes": 2214673,
+    "server_last_modified": "Tue, 21 Jul 2026 09:40:50 GMT",
+    "catalogue_date_update": "2026-07-21T00:00:00",
+    "pinned_at": "2026-09-17T18:35:38+00:00"
+  },
+  "GT": {
+    "sha256": "d2c47e116553711f7c2fd6b62437db511038fd9bd9ec77815fa69ff7a18a89a9",
+    "bytes": 20501708,
+    "server_last_modified": "Sat, 06 Dec 2025 15:13:44 GMT",
+    "catalogue_date_update": "2025-10-28T00:00:00",
+    "pinned_at": "2026-09-17T18:35:42+00:00"
+  },
+  "OA": {
+    "sha256": "e2781a554d4efb36f17999d031acc99f0a7d8bb25a1b4d55cc5d403ccfb6b694",
+    "bytes": 1581544,
+    "server_last_modified": "Mon, 09 Mar 2026 08:51:52 GMT",
+    "catalogue_date_update": "2026-03-09T00:00:00",
+    "pinned_at": "2026-09-17T18:35:43+00:00"
+  },
+  "PP": {
+    "sha256": "0eaff92014d4af5fc2f477dbd436a792bfed1a408645e9ed18d8e45ab14fdc6b",
+    "bytes": 11683910,
+    "server_last_modified": "Fri, 09 Jan 2026 14:39:37 GMT",
+    "catalogue_date_update": "2026-01-09T00:00:00",
+    "pinned_at": "2026-09-17T18:35:44+00:00"
+  },
+  "QCL": {
+    "sha256": "c5835418c18f9322e7decbd6800f93a216eaae3cdfa31acb08f0518c0c6d6853",
+    "bytes": 33921825,
+    "server_last_modified": "Wed, 31 Dec 2025 11:33:28 GMT",
+    "catalogue_date_update": "2025-12-31T00:00:00",
+    "pinned_at": "2026-09-17T18:35:37+00:00"
+  },
+  "RFN": {
+    "sha256": "6cf684dd5366d96fd8554b626dd3a60d57f8ac5c8a7775394334d52ec3a498ae",
+    "bytes": 2030532,
+    "server_last_modified": "Thu, 30 Jul 2026 10:43:37 GMT",
+    "catalogue_date_update": "2026-07-30T00:00:00",
+    "pinned_at": "2026-09-17T18:35:39+00:00"
+  },
+  "RL": {
+    "sha256": "f6ccf002c3e83a32613d84f032e002b77ac80c8f871c454b12104815f36a9ad5",
+    "bytes": 2971760,
+    "server_last_modified": "Wed, 16 Sep 2026 13:42:46 GMT",
+    "catalogue_date_update": "2026-07-17T00:00:00",
+    "pinned_at": "2026-09-17T18:35:40+00:00"
+  }
+}

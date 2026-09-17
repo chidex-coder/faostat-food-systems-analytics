@@ -39,6 +39,7 @@ from sklearn.preprocessing import StandardScaler
 from . import viz
 from .config import DB_PATH, FIGURES_DIR, MODELS_DIR
 from .viz import CATEGORICAL
+from .web import write_figure
 
 SEED = 2026
 REGIONS = ["Africa", "Americas", "Asia", "Europe", "Oceania"]
@@ -195,7 +196,7 @@ def yield_forecast(panel: pd.DataFrame) -> dict:
     fig.update_xaxes(title_text="Actual (t/ha)", row=1, col=1)
     fig.update_yaxes(title_text="Predicted (t/ha)", row=1, col=1)
     viz.legend_bottom(fig)
-    fig.write_html(FIGURES_DIR / "ml_yield_forecast.html", include_plotlyjs="cdn", config={"displaylogo": False, "responsive": True})
+    write_figure(fig, FIGURES_DIR / "ml_yield_forecast.html", title="ml_yield_forecast")
 
     return {"task": "One-step-ahead cereal yield (t/ha), countries with >= 20 kha harvested", "split": f"train < {split_year}, test >= {split_year}",
             "n_train": int(len(train)), "n_test": int(len(test)), "n_countries": int(data.area_code.nunique()), "features": feats,
@@ -268,7 +269,7 @@ def risk_classifier(panel: pd.DataFrame) -> dict:
     fig.update_xaxes(title_text="False positive rate", row=1, col=1)
     fig.update_yaxes(title_text="True positive rate", row=1, col=1)
     viz.legend_bottom(fig)
-    fig.write_html(FIGURES_DIR / "ml_risk_classifier.html", include_plotlyjs="cdn", config={"displaylogo": False, "responsive": True})
+    write_figure(fig, FIGURES_DIR / "ml_risk_classifier.html", title="ml_risk_classifier")
 
     return {"task": f"Classify country-years with prevalence of undernourishment >= {threshold:.0f} % from structural features only",
             "split": f"train < {split_year}, test >= {split_year}", "n_train": int(len(train)), "n_test": int(len(test)),
@@ -325,7 +326,7 @@ def typology(panel: pd.DataFrame) -> dict:
     fig.update_layout(title=f"Food-system typology: k-means (k = {best_k}, silhouette {best_s:.2f}) on {len(feats)} standardised indicators, PCA projection",
                       xaxis_title=f"PC1 ({100 * pca.explained_variance_ratio_[0]:.0f} % of variance)", yaxis_title=f"PC2 ({100 * pca.explained_variance_ratio_[1]:.0f} %)", height=620)
     viz.legend_bottom(fig)
-    fig.write_html(FIGURES_DIR / "ml_typology.html", include_plotlyjs="cdn", config={"displaylogo": False, "responsive": True})
+    write_figure(fig, FIGURES_DIR / "ml_typology.html", title="ml_typology")
     return {"task": "Cluster countries by latest food-system profile", "k": best_k, "silhouette_by_k": sil, "n_countries": int(len(latest)),
             "features": list(feats), "explained_variance_pc1_pc2": [float(v) for v in pca.explained_variance_ratio_],
             "clusters": [{"cluster": int(c), "name": names[c], "n": int((latest.cluster == c).sum()),
@@ -362,7 +363,7 @@ def projections(con: sqlite3.Connection, horizon: int = 2030) -> dict:
                            "latest_mt": float(g.production_mt.iloc[-1]), "latest_year": int(g.year.max())}
     pd.DataFrame(rows).to_csv(MODELS_DIR / "cereal_projections.csv", index=False)
     fig.update_layout(title=f"Cereal production by region: observed and log-linear projection to {horizon} (95 % prediction band)", yaxis_title="Mt", yaxis_type="log", hovermode="x unified")
-    fig.write_html(FIGURES_DIR / "ml_projections.html", include_plotlyjs="cdn", config={"displaylogo": False, "responsive": True})
+    write_figure(fig, FIGURES_DIR / "ml_projections.html", title="ml_projections")
     return {"task": f"Log-linear trend projection of regional cereal production to {horizon}", "fit_window": "2005 - latest", "regions": summary}
 
 
@@ -372,7 +373,18 @@ def run_all(db_path: Path = DB_PATH) -> dict:
     con = sqlite3.connect(db_path)
     panel = build_panel(con)
     panel.to_csv(MODELS_DIR / "feature_panel.csv", index=False)
-    metrics = {"panel_rows": int(len(panel)), "panel_countries": int(panel.area_code.nunique()), "seed": SEED}
+    metrics = {"panel_rows": int(len(panel)), "panel_countries": int(panel.area_code.nunique()), "seed": SEED,
+               "model_card": "models/MODEL_CARD.md",
+               "intended_use": "Exploratory screening and planning support on FAO statistics. All models are descriptive, "
+                               "not causal; none should allocate resources or trigger action without human review of the "
+                               "country context.",
+               "limitations": ["Targets are FAO estimates (yield: 45 % official / 53 % estimated-imputed rows; PoU: fully modelled), "
+                               "so the models learn FAO's methodology as much as the world.",
+                               "Time-based validation covers 2017-2024 only; structural breaks (conflict, pandemic, price shocks) "
+                               "are under-represented.",
+                               "Country-years are not independent samples; reported metrics are optimistic for a never-seen country.",
+                               "The risk classifier threshold (PoU >= 15 %) is FAO's 'moderately high' boundary, chosen for "
+                               "interpretability, not optimised for any decision cost."]}
     print("  yield forecast ...")
     metrics["yield_forecast"] = yield_forecast(panel)
     print("  risk classifier ...")

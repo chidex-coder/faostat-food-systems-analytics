@@ -3,7 +3,7 @@ render one Plotly figure per question.
 
 Outputs
 -------
-reports/figures/qNN_slug.html   interactive figure (Plotly.js loaded from CDN)
+reports/figures/qNN_slug.html   interactive figure (pinned Plotly.js from CDN, SRI-checked)
 reports/tables/qNN_slug.csv     the tidy result table behind the figure
 reports/analysis_report.md      question, findings and figure link for every question
 reports/answers.json            machine-readable findings used by the dashboard
@@ -24,6 +24,7 @@ import plotly.graph_objects as go
 from . import viz
 from .config import DB_PATH, FIGURES_DIR, REPORTS_DIR, SQL_DIR
 from .viz import CATEGORICAL, CROP_COLOURS, REGION_COLOURS, SEQUENTIAL, TEXT_2
+from .web import write_figure
 
 TABLES_DIR = REPORTS_DIR / "tables"
 QUESTIONS_DIR = SQL_DIR / "questions"
@@ -780,7 +781,7 @@ def run_all(db_path: Path = DB_PATH, only: list[str] | None = None) -> list[Answ
         fig, findings, numbers = result[0], result[1], result[2]
         table = result[3] if len(result) > 3 else df
         fig_file = FIGURES_DIR / f"{slug}.html"
-        fig.write_html(fig_file, include_plotlyjs="cdn", full_html=True, config={"displaylogo": False, "responsive": True})
+        write_figure(fig, fig_file, title=qtext)
         tbl_file = TABLES_DIR / f"{slug}.csv"
         table.to_csv(tbl_file, index=False)
         answers.append(Answer(slug.split("_")[0].upper(), slug, qtext, theme, findings, f"figures/{slug}.html", f"tables/{slug}.csv",

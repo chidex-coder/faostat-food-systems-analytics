@@ -6,7 +6,7 @@
 <title>Food Systems Explorer</title>
 <meta name="description" content="Interactive analytics on FAOSTAT: production, food security, inputs, land, climate, prices and predictive models.">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌾</text></svg>">
-<script src="https://cdn.plot.ly/plotly-2.35.2.min.js" charset="utf-8"></script>
+<!--__PLOTLY_SCRIPT__-->
 <style>
 :root{
   color-scheme:light;
@@ -240,7 +240,7 @@ footer{max-width:1400px;margin:0 auto;padding:12px 16px 32px;color:var(--text-3)
 
   <!-- PREDICTIONS -->
   <section class="tab" data-tab="predict">
-    <div class="note" style="margin-bottom:14px">Models are trained on the warehouse with strictly time-based splits (train on earlier years, test on later ones). Metrics below are from the held-out years, not the training data. See <code>models/metrics.json</code> for the full record.</div>
+    <div class="note" style="margin-bottom:14px"><b>Read before using these numbers.</b> All four models are <em>descriptive, not causal</em>. They are trained on FAO's published series - the undernourishment target is itself a modelled estimate - and validated with strictly time-based splits (train on earlier years, test on later ones); metrics below are from the held-out years. The risk score is a screening aid for where to look first, not a basis for allocating resources without reading the country context. Full record and limitations: <code>models/metrics.json</code> and <code>models/MODEL_CARD.md</code>.</div>
     <div class="grid two">
       <div class="card">
         <h3 id="pdYieldTitle">Next-year cereal-yield forecast</h3>

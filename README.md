@@ -29,14 +29,17 @@ src/dashboard.py ────────► docs/index.html (GitHub Pages)
 ## Quick start
 
 ```bash
-python3.12 -m venv .venv && .venv/bin/pip install -r requirements.txt
+python3.12 -m venv .venv && .venv/bin/pip install -r requirements.lock   # exact versions; requirements.txt = minimums
 .venv/bin/python run_pipeline.py            # ~80 MB download, then ~2 minutes
 .venv/bin/python -m http.server 8766 --directory docs   # open http://localhost:8766
 .venv/bin/python -m pytest -q
 ```
 
 `run_pipeline.py --skip-extract` reuses archives already in `data/raw`;
-`--only analysis dashboard` re-runs individual stages. Setting `FAOSTAT_TOKEN`
+`--only analysis dashboard` re-runs individual stages. Downloaded archives are
+checked against the reviewed hashes in `data/reference/archive_pins.json`; when
+FAO publishes a new release the build stops and asks for `--update-pins`.
+Setting `FAOSTAT_TOKEN`
 enables the REST client in `src/extract.py` (`FaostatApi`) for ad-hoc queries;
 the bulk archives remain the build path because they need no credentials.
 
@@ -54,7 +57,8 @@ the bulk archives remain the build path because they need no credentials.
 | OA | Annual population | 81,901 | totals, urban/rural |
 | CAHD | Cost and affordability of a healthy diet | 6,894 | CoHD, share unable to afford |
 
-Geography comes from the UN M49 standard (`data/reference/un_m49.csv`), giving
+Geography comes from the UN M49 standard (`data/reference/          un_m49.csv (UN geography), archive_pins.json (reviewed FAO release hashes)
+SECURITY.md              controls, residual risks, publication boundary`), giving
 every country a region, sub-region and LDC / LLDC / SIDS flags.
 
 ---
@@ -178,36 +182,50 @@ only, not the UNFCCC submissions, so every country is on the same method.
 
 ### 5. Security and policy
 
-Handled:
+Handled (details and residuals in [SECURITY.md](SECURITY.md)):
 
-* No credentials are needed to build. The optional API token is read from the
-  environment, never logged, never written to disk, and the client is opt-in.
-* Downloads are verified: size against `Content-Length`, zip integrity via
-  `testzip()`, and SHA-256 recorded. A corrupt archive is deleted and the build
-  stops.
-* The dashboard loads exactly one external script (Plotly.js from cdn.plot.ly)
-  and no external data; per-viewer preferences (theme, filters) stay in
-  `localStorage` wrapped in try/catch.
-* FAO's terms of use are stated in the dashboard footer; the data are FAO's and
-  are redistributed here only as derived aggregates and figures.
-* No personal data of any kind is processed.
+* **Supply chain of the page.** Every emitted HTML - 39 figures and the dashboard -
+  loads one pinned Plotly.js build with a Subresource Integrity hash and
+  `crossorigin="anonymous"` ([src/web.py](src/web.py)). A tampered CDN response
+  is refused by the browser. [tests/test_web.py](tests/test_web.py) fails if any
+  file drifts from the pin.
+* **Supply chain of the data.** FAO publishes no signatures, so the project pins
+  the SHA-256 of every archive it has reviewed
+  ([data/reference/archive_pins.json](data/reference/archive_pins.json)). A
+  download whose hash differs aborts the build until `--update-pins` is passed
+  after review - the hash now proves "the same bytes that were reviewed", not
+  merely "what was fetched". Size and zip-integrity checks run before hashing.
+* **Dependencies** are locked to exact versions in `requirements.lock`.
+* **Credentials.** None needed to build. The optional API token is read from the
+  environment only, sent as a bearer header, and masked in `repr` so it cannot
+  leak into a traceback.
+* **Polite client.** Identifying User-Agent, conditional requests
+  (`If-None-Match` - an unchanged archive is never re-downloaded), one request
+  per second at most, exponential back-off with jitter, and written guidance not
+  to schedule extraction more than weekly.
+* **Publication boundary.** The dashboard inlines its data, so everything on the
+  page is visible in view-source. The builder enforces an allowlist of blocks
+  and fields (`PUBLISHABLE` in [src/dashboard.py](src/dashboard.py)) and refuses
+  to build unless `meta.data_classification == "public"`; the page states that
+  classification. Per-viewer preferences stay in `localStorage` under try/catch.
+* **Model risk.** [models/MODEL_CARD.md](models/MODEL_CARD.md) records intended
+  use, exclusions and known failure modes for all four models; `metrics.json`
+  carries the same `intended_use` / `limitations`; the *Predictions* tab opens
+  with the warning that the models are descriptive screening aids trained on
+  FAO's modelled series.
+* FAO's terms of use are stated in the dashboard footer; no personal data is
+  processed anywhere.
 
-Silently absent, and worth knowing:
+Still absent, by choice or by circumstance:
 
-* **No pinning of Plotly.js by integrity hash** - a compromised CDN would run in
-  the viewer's browser. Adding `integrity`/`crossorigin` attributes is the fix.
-* **No signature verification of FAO archives** - FAO does not publish
-  signatures; the hash proves *what* was downloaded, not *who* published it.
-* **No rate limiting or retries with jitter** against the FAO bucket beyond
-  simple exponential back-off; a scheduled hourly rebuild would be rude.
-* **No access control on the dashboard** - it is public by design; if the same
-  pattern were applied to non-public data, the inlined-JSON approach would leak
-  everything in view-source.
-* **No dependency pinning to exact versions** in `requirements.txt` (only
-  minimums). A lock file would make the build bit-for-bit reproducible.
-* **Model risk**: the risk classifier is descriptive, not causal, and is trained
-  on FAO's modelled PoU. It is a screening aid; it should not be used to
-  allocate resources without a human reading the country context.
+* **First-use trust.** The initial archive pin is trust-on-first-use over HTTPS;
+  only FAO signing its releases would close that.
+* **No wheel hash-pinning** (`pip --require-hashes`); the lock file pins versions,
+  not artefact hashes.
+* **No access control** on the dashboard - public by design. Reusing the inlined
+  pattern on restricted data would be wrong; SECURITY.md says what to do instead.
+* **No drift monitoring** for the models - there is no production deployment to
+  monitor; they are retrained on every build with a fixed seed.
 
 ## Repository layout
 
@@ -221,12 +239,14 @@ src/quality.py           data-quality gate
 src/analysis.py          35 questions → figures, tables, findings
 src/ml.py                yield forecast, risk classifier, typology, projections
 src/viz.py               shared Plotly theme (entity-stable colours)
+src/web.py               pinned Plotly.js build + SRI hash, figure writer
 src/dashboard.py         packs data + template into docs/index.html
 sql/schema.sql, views.sql, indexes.sql, questions/*.sql
 reports/                 analysis_report.md, answers.json, figures/, tables/
-models/                  metrics.json, predictions, importances, clusters, projections
+models/                  metrics.json, MODEL_CARD.md, predictions, importances, clusters, projections
 docs/                    dashboard (template.html → index.html), copied figures
-data/reference/un_m49.csv
+data/reference/          un_m49.csv (UN geography), archive_pins.json (reviewed FAO release hashes)
+SECURITY.md              controls, residual risks, publication boundary
 tests/
 ```
 
