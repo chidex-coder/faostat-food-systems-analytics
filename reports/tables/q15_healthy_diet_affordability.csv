@@ -1,0 +1,147 @@
+area_code,area,region,is_aggregate,year,cohd_ppp_per_day,unaffordable_pct,unaffordable_m
+277,South Sudan,Africa,0,2025,4.09,93.9,11.4
+130,Malawi,Africa,0,2025,5.01,92.7,20.6
+144,Mozambique,Africa,0,2025,4.49,91.3,32.5
+29,Burundi,Africa,0,2025,4.65,90.9,13.1
+250,Democratic Republic of the Congo,Africa,0,2025,2.66,90.1,101.7
+93,Haiti,Americas,0,2025,6.51,88.9,10.6
+37,Central African Republic,Africa,0,2025,4.34,87.6,4.8
+251,Zambia,Africa,0,2025,4.18,86.2,18.9
+158,Niger,Africa,0,2025,5.01,85.8,24.0
+129,Madagascar,Africa,0,2025,4.08,85.3,27.9
+159,Nigeria,Africa,0,2025,4.17,80.5,191.2
+122,Lesotho,Africa,0,2025,5.47,77.4,1.8
+46,Congo,Africa,0,2025,4.48,77.3,5.0
+114,Kenya,Africa,0,2025,4.5,76.3,43.9
+226,Uganda,Africa,0,2025,3.74,73.6,37.8
+215,United Republic of Tanzania,Africa,0,2025,3.53,73.0,51.5
+7,Angola,Africa,0,2025,5.18,72.9,28.4
+184,Rwanda,Africa,0,2025,4.58,69.7,10.2
+101,Indonesia,Asia,0,2025,5.09,68.6,195.9
+209,Eswatini,Africa,0,2025,4.95,68.1,0.9
+238,Ethiopia,Africa,0,2025,4.75,67.9,92.0
+39,Chad,Africa,0,2025,4.07,66.6,14.0
+175,Guinea-Bissau,Africa,0,2025,4.38,66.4,1.5
+81,Ghana,Africa,0,2025,4.65,65.8,23.1
+233,Burkina Faso,Africa,0,2025,3.92,65.5,15.8
+61,Equatorial Guinea,Africa,0,2025,4.88,63.2,1.2
+165,Pakistan,Asia,0,2025,3.94,63.0,160.7
+197,Sierra Leone,Africa,0,2025,3.89,61.9,5.5
+212,Syrian Arab Republic,Asia,0,2025,6.85,61.1,15.6
+133,Mali,Africa,0,2025,3.98,60.8,15.3
+20,Botswana,Africa,0,2025,4.44,59.9,1.5
+123,Liberia,Africa,0,2025,3.6,59.6,3.4
+66,Fiji,Oceania,0,2025,4.75,58.0,0.5
+202,South Africa,Africa,0,2025,4.02,57.9,37.5
+32,Cameroon,Africa,0,2025,4.58,55.3,16.5
+217,Togo,Africa,0,2025,3.95,53.7,4.6
+53,Benin,Africa,0,2025,3.58,53.5,7.9
+166,Panama,Americas,0,2025,4.46,51.4,2.4
+193,Sao Tome and Principe,Africa,0,2025,4.91,51.1,0.1
+136,Mauritania,Africa,0,2025,5.57,50.9,2.7
+90,Guinea,Africa,0,2025,5.33,50.3,7.6
+72,Djibouti,Africa,0,2025,4.84,49.8,0.6
+120,Lao People's Democratic Republic,Asia,0,2025,5.23,49.7,3.9
+35,Cabo Verde,Africa,0,2025,3.88,49.3,0.3
+45,Comoros,Africa,0,2025,5.47,48.6,0.4
+147,Namibia,Africa,0,2025,4.88,47.9,1.5
+89,Guatemala,Americas,0,2025,5.18,47.3,8.8
+107,Côte d'Ivoire,Africa,0,2025,3.64,46.6,15.2
+121,Lebanon,Asia,0,2025,6.97,46.4,2.7
+195,Senegal,Africa,0,2025,3.83,45.5,8.6
+171,Philippines,Asia,0,2025,4.48,45.0,52.6
+1,Armenia,Asia,0,2025,4.56,44.0,1.3
+75,Gambia,Africa,0,2025,4.49,43.7,1.2
+196,Seychelles,Africa,0,2025,4.4,43.3,0.1
+48,Costa Rica,Americas,0,2025,5.04,41.8,2.2
+74,Gabon,Africa,0,2025,4.78,39.3,1.0
+4,Algeria,Africa,0,2025,5.56,38.8,18.4
+16,Bangladesh,Asia,0,2025,4.59,38.6,67.8
+59,Egypt,Africa,0,2025,6.06,38.5,45.5
+102,Iran (Islamic Republic of),Asia,0,2025,4.8,37.4,34.5
+40,Chile,Americas,0,2025,5.65,36.8,7.3
+44,Colombia,Americas,0,2025,5.04,35.9,19.2
+100,India,Asia,0,2025,4.11,35.5,520.1
+38,Sri Lanka,Asia,0,2025,5.21,34.9,8.1
+170,Peru,Americas,0,2025,4.45,34.8,12.0
+95,Honduras,Americas,0,2025,4.85,34.2,3.8
+220,Trinidad and Tobago,Americas,0,2025,5.82,32.0,0.5
+234,Uruguay,Americas,0,2025,4.54,32.0,1.1
+97,Hungary,Europe,0,2025,5.36,29.8,2.9
+141,Mongolia,Asia,0,2025,7.28,29.8,1.0
+103,Iraq,Asia,0,2025,4.88,28.0,13.2
+199,Slovakia,Europe,0,2025,4.57,27.2,1.5
+109,Jamaica,Americas,0,2025,6.21,26.4,0.7
+58,Ecuador,Americas,0,2025,3.66,25.7,4.7
+207,Suriname,Americas,0,2025,5.94,23.7,0.2
+86,Grenada,Americas,0,2025,6.01,22.9,0.0
+84,Greece,Europe,0,2025,4.65,22.7,2.3
+105,Israel,Asia,0,2025,3.65,22.5,2.1
+169,Paraguay,Americas,0,2025,5.31,22.3,1.6
+113,Kyrgyzstan,Asia,0,2025,3.91,22.1,1.6
+21,Brazil,Americas,0,2025,4.89,21.1,44.8
+27,Bulgaria,Europe,0,2025,5.75,20.7,1.4
+183,Romania,Europe,0,2025,4.21,20.1,3.8
+138,Mexico,Americas,0,2025,4.54,20.0,26.4
+149,Nepal,Asia,0,2025,4.19,17.9,5.3
+23,Belize,Americas,0,2025,4.69,17.8,0.1
+137,Mauritius,Africa,0,2025,4.84,17.8,0.2
+299,Palestine,Asia,0,2025,3.95,17.3,0.5
+119,Latvia,Europe,0,2025,5.16,16.9,0.3
+56,Dominican Republic,Americas,0,2025,5.6,16.2,1.9
+154,North Macedonia,Europe,0,2025,5.39,15.6,0.3
+174,Portugal,Europe,0,2025,4.3,14.4,1.5
+110,Japan,Asia,0,2025,8.27,13.2,16.2
+80,Bosnia and Herzegovina,Europe,0,2025,6.88,12.7,0.4
+143,Morocco,Africa,0,2025,3.64,12.4,4.8
+185,Russian Federation,Europe,0,2025,3.39,12.4,17.8
+126,Lithuania,Europe,0,2025,4.37,12.3,0.3
+98,Croatia,Europe,0,2025,5.1,12.0,0.5
+3,Albania,Europe,0,2025,5.16,11.9,0.3
+146,Republic of Moldova,Europe,0,2025,3.81,11.4,0.3
+41,"China, mainland",Asia,0,2025,3.64,11.3,160.4
+19,Bolivia (Plurinational State of),Americas,0,2025,5.38,10.5,1.3
+63,Estonia,Europe,0,2025,4.89,10.2,0.1
+91,Guyana,Americas,0,2025,7.02,9.3,0.1
+203,Spain,Europe,0,2025,4.33,9.3,4.5
+222,Tunisia,Africa,0,2025,5.22,8.6,1.1
+272,Serbia,Europe,0,2025,5.74,8.5,0.7
+106,Italy,Europe,0,2025,4.55,8.4,4.9
+273,Montenegro,Europe,0,2025,5.08,7.5,0.0
+173,Poland,Europe,0,2025,4.55,7.3,2.8
+189,Saint Lucia,Americas,0,2025,5.24,7.1,0.0
+237,Viet Nam,Asia,0,2025,4.59,7.0,7.1
+235,Uzbekistan,Asia,0,2025,4.6,6.2,2.3
+167,Czechia,Europe,0,2025,3.99,5.8,0.6
+79,Germany,Europe,0,2025,4.35,5.3,4.5
+117,Republic of Korea,Asia,0,2025,7.37,5.3,2.8
+210,Sweden,Europe,0,2025,4.35,4.9,0.5
+134,Malta,Europe,0,2025,5.37,4.5,0.0
+231,United States of America,Americas,0,2025,2.86,4.5,15.7
+132,Maldives,Asia,0,2025,4.45,4.2,0.0
+223,Türkiye,Asia,0,2025,4.58,4.0,3.5
+214,"China, Taiwan Province of",Asia,0,2025,5.48,3.8,0.9
+18,Bhutan,Asia,0,2025,6.17,3.7,0.0
+68,France,Europe,0,2025,4.12,3.5,2.4
+108,Kazakhstan,Asia,0,2025,3.07,3.4,0.7
+10,Australia,Oceania,0,2025,3.33,3.2,0.9
+33,Canada,Americas,0,2025,4.46,3.0,1.2
+229,United Kingdom of Great Britain and Northern Ireland,Europe,0,2025,2.75,2.9,2.0
+11,Austria,Europe,0,2025,3.28,2.9,0.3
+198,Slovenia,Europe,0,2025,4.26,2.3,0.0
+112,Jordan,Asia,0,2025,3.45,2.2,0.3
+67,Finland,Europe,0,2025,4.0,2.0,0.1
+179,Qatar,Asia,0,2025,2.73,1.9,0.7
+225,United Arab Emirates,Asia,0,2025,3.27,1.9,0.2
+99,Iceland,Europe,0,2025,3.64,1.8,0.0
+50,Cyprus,Asia,0,2025,4.18,1.5,0.0
+131,Malaysia,Asia,0,2025,4.42,1.4,0.5
+54,Denmark,Europe,0,2025,3.47,1.3,0.1
+162,Norway,Europe,0,2025,4.91,1.2,0.1
+150,Netherlands (Kingdom of the),Europe,0,2025,3.56,1.1,0.2
+211,Switzerland,Europe,0,2025,3.22,1.1,0.1
+104,Ireland,Europe,0,2025,3.14,0.9,0.0
+255,Belgium,Europe,0,2025,3.12,0.9,0.1
+256,Luxembourg,Europe,0,2025,3.73,0.9,0.0
+52,Azerbaijan,Asia,0,2025,4.37,0.7,0.1
+57,Belarus,Europe,0,2025,4.01,0.6,0.1

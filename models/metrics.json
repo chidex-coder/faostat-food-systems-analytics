@@ -1,0 +1,462 @@
+{
+  "panel_rows": 6162,
+  "panel_countries": 183,
+  "seed": 2026,
+  "yield_forecast": {
+    "task": "One-step-ahead cereal yield (t/ha), countries with >= 20 kha harvested",
+    "split": "train < 2019, test >= 2019",
+    "n_train": 3780,
+    "n_test": 903,
+    "n_countries": 152,
+    "features": [
+      "yield_lag1",
+      "yield_lag2",
+      "yield_lag3",
+      "yield_mean3",
+      "yield_trend5",
+      "n_lag1",
+      "temp_lag1",
+      "irrigation_lag1",
+      "log_population",
+      "year",
+      "region_Africa",
+      "region_Americas",
+      "region_Asia",
+      "region_Europe",
+      "region_Oceania"
+    ],
+    "models": {
+      "Persistence (last year)": {
+        "mae": 0.32231771871539316,
+        "rmse": 0.5396012402327172,
+        "r2": 0.9320523181612923,
+        "mape_pct": 11.23941815634264
+      },
+      "Ridge regression": {
+        "mae": 0.27022593274919376,
+        "rmse": 0.4265500652259786,
+        "r2": 0.9575410948141803,
+        "mape_pct": 11.03419721141926
+      },
+      "Gradient boosting": {
+        "mae": 0.29958222333482365,
+        "rmse": 0.46458572364708645,
+        "r2": 0.9496313296377265,
+        "mape_pct": 16.298835462300538
+      }
+    },
+    "best": "Ridge regression",
+    "top_features": [
+      {
+        "feature": "yield_lag1",
+        "importance": 0.7203567740633215,
+        "std": 0.02092271611569345
+      },
+      {
+        "feature": "yield_mean3",
+        "importance": 0.38447756089956486,
+        "std": 0.015336111487659749
+      },
+      {
+        "feature": "yield_lag2",
+        "importance": 0.341203891989512,
+        "std": 0.010763970958749286
+      },
+      {
+        "feature": "yield_lag3",
+        "importance": 0.09807857136731728,
+        "std": 0.0031574994678965776
+      },
+      {
+        "feature": "yield_trend5",
+        "importance": 0.016763799033783635,
+        "std": 0.0021078194765327455
+      },
+      {
+        "feature": "region_Africa",
+        "importance": 0.0037613989286549316,
+        "std": 0.0008253490655600479
+      }
+    ],
+    "forecast_year": 2025,
+    "n_forecast_countries": 148
+  },
+  "risk_classifier": {
+    "task": "Classify country-years with prevalence of undernourishment >= 15 % from structural features only",
+    "split": "train < 2017, test >= 2017",
+    "n_train": 1791,
+    "n_test": 806,
+    "positive_rate_test": 0.337468982630273,
+    "features": [
+      "log_gdp_cap",
+      "cereal_kg_per_cap",
+      "cereal_import_dep_pct",
+      "food_import_share_pct",
+      "water_basic_pct",
+      "sanitation_basic_pct",
+      "urban_share",
+      "irrigation_share",
+      "n_kg_per_ha",
+      "temp_change_c",
+      "cereal_yield_t_ha",
+      "agrifood_t_per_cap",
+      "forest_share",
+      "is_ldc",
+      "is_lldc",
+      "is_sids",
+      "region_Africa",
+      "region_Americas",
+      "region_Asia",
+      "region_Europe",
+      "region_Oceania"
+    ],
+    "models": {
+      "Logistic regression": {
+        "roc_auc": 0.8822496695307336,
+        "pr_auc": 0.7740742710081834,
+        "f1": 0.6777546777546778,
+        "balanced_accuracy": 0.7565611918924873,
+        "confusion": {
+          "tn": 488,
+          "fp": 46,
+          "fn": 109,
+          "tp": 163
+        }
+      },
+      "Random forest": {
+        "roc_auc": 0.9189799515311744,
+        "pr_auc": 0.885051596499161,
+        "f1": 0.7829614604462475,
+        "balanced_accuracy": 0.8285621833002864,
+        "confusion": {
+          "tn": 506,
+          "fp": 28,
+          "fn": 79,
+          "tp": 193
+        }
+      },
+      "Gradient boosting": {
+        "roc_auc": 0.9264017404714695,
+        "pr_auc": 0.8932488943402525,
+        "f1": 0.7991967871485943,
+        "balanced_accuracy": 0.8405279246530073,
+        "confusion": {
+          "tn": 507,
+          "fp": 27,
+          "fn": 73,
+          "tp": 199
+        }
+      }
+    },
+    "best": "Gradient boosting",
+    "top_features": [
+      {
+        "feature": "sanitation_basic_pct",
+        "importance": 0.07513494161709626,
+        "std": 0.007747188228309152
+      },
+      {
+        "feature": "log_gdp_cap",
+        "importance": 0.07387961739002717,
+        "std": 0.008322500731310186
+      },
+      {
+        "feature": "cereal_kg_per_cap",
+        "importance": 0.04313909084232941,
+        "std": 0.0030447061071904387
+      },
+      {
+        "feature": "water_basic_pct",
+        "importance": 0.02519506866416982,
+        "std": 0.006035984596688578
+      },
+      {
+        "feature": "cereal_yield_t_ha",
+        "importance": 0.010261529705515157,
+        "std": 0.0026141848793566572
+      },
+      {
+        "feature": "irrigation_share",
+        "importance": 0.008768910185797167,
+        "std": 0.0023025073039267983
+      }
+    ],
+    "n_scored_countries": 171
+  },
+  "typology": {
+    "task": "Cluster countries by latest food-system profile",
+    "k": 4,
+    "silhouette_by_k": {
+      "3": 0.21705100656601314,
+      "4": 0.22223600268244276,
+      "5": 0.2202460215643551,
+      "6": 0.17212162883827972,
+      "7": 0.16505064971094888
+    },
+    "n_countries": 174,
+    "features": [
+      "cereal_yield_t_ha",
+      "n_kg_per_ha",
+      "cereal_kg_per_cap",
+      "cereal_import_dep_pct",
+      "pou_pct",
+      "obesity_pct",
+      "agrifood_t_per_cap",
+      "urban_share",
+      "log_gdp_cap",
+      "forest_share",
+      "cropland_share",
+      "unaffordable_pct"
+    ],
+    "explained_variance_pc1_pc2": [
+      0.32263787077059464,
+      0.13529383295385644
+    ],
+    "clusters": [
+      {
+        "cluster": 0,
+        "name": "high diet unaffordable \u00b7 low log gdp per head",
+        "n": 60,
+        "members": [
+          "Afghanistan",
+          "Angola",
+          "Bangladesh",
+          "Benin",
+          "Burkina Faso",
+          "Burundi",
+          "Cabo Verde",
+          "Cambodia",
+          "Cameroon",
+          "Central African Republic",
+          "Chad",
+          "Comoros",
+          "Congo",
+          "C\u00f4te d'Ivoire",
+          "Democratic People's Republic of Korea",
+          "Democratic Republic of the Congo",
+          "Djibouti",
+          "Eswatini",
+          "Ethiopia",
+          "Gambia",
+          "Ghana",
+          "Guinea",
+          "Guinea-Bissau",
+          "Haiti",
+          "India",
+          "Indonesia",
+          "Kenya",
+          "Lao People's Democratic Republic",
+          "Lesotho",
+          "Liberia",
+          "Madagascar",
+          "Malawi",
+          "Mali",
+          "Mauritania",
+          "Mozambique",
+          "Myanmar",
+          "Namibia",
+          "Nepal",
+          "Niger",
+          "Nigeria",
+          "Pakistan",
+          "Papua New Guinea",
+          "Philippines",
+          "Rwanda",
+          "Sao Tome and Principe",
+          "Senegal",
+          "Sierra Leone",
+          "Solomon Islands",
+          "South Sudan",
+          "Sri Lanka",
+          "Sudan",
+          "Syrian Arab Republic",
+          "Tajikistan",
+          "Timor-Leste",
+          "Togo",
+          "Uganda",
+          "United Republic of Tanzania",
+          "Vanuatu",
+          "Zambia",
+          "Zimbabwe"
+        ]
+      },
+      {
+        "cluster": 1,
+        "name": "low diet unaffordable \u00b7 high urban share",
+        "n": 87,
+        "members": [
+          "Albania",
+          "Algeria",
+          "Antigua and Barbuda",
+          "Armenia",
+          "Austria",
+          "Azerbaijan",
+          "Bahamas",
+          "Barbados",
+          "Belgium",
+          "Belize",
+          "Bhutan",
+          "Bolivia (Plurinational State of)",
+          "Bosnia and Herzegovina",
+          "Botswana",
+          "Brunei Darussalam",
+          "Chile",
+          "China, mainland",
+          "Colombia",
+          "Costa Rica",
+          "Croatia",
+          "Cuba",
+          "Cyprus",
+          "Czechia",
+          "Dominica",
+          "Dominican Republic",
+          "Ecuador",
+          "El Salvador",
+          "Fiji",
+          "Finland",
+          "Gabon",
+          "Georgia",
+          "Germany",
+          "Greece",
+          "Grenada",
+          "Guatemala",
+          "Honduras",
+          "Iceland",
+          "Iran (Islamic Republic of)",
+          "Iraq",
+          "Ireland",
+          "Israel",
+          "Italy",
+          "Jamaica",
+          "Japan",
+          "Jordan",
+          "Kyrgyzstan",
+          "Lebanon",
+          "Libya",
+          "Luxembourg",
+          "Malaysia",
+          "Maldives",
+          "Malta",
+          "Mauritius",
+          "Mexico",
+          "Micronesia (Federated States of)",
+          "Mongolia",
+          "Montenegro",
+          "Morocco",
+          "Netherlands (Kingdom of the)",
+          "New Zealand",
+          "Nicaragua",
+          "North Macedonia",
+          "Norway",
+          "Palestine",
+          "Panama",
+          "Peru",
+          "Portugal",
+          "Republic of Korea",
+          "Republic of Moldova",
+          "Russian Federation",
+          "Saint Vincent and the Grenadines",
+          "Saudi Arabia",
+          "Slovakia",
+          "Slovenia",
+          "South Africa",
+          "Spain",
+          "Sweden",
+          "Switzerland",
+          "Thailand",
+          "Trinidad and Tobago",
+          "Tunisia",
+          "Turkmenistan",
+          "T\u00fcrkiye",
+          "United Kingdom of Great Britain and Northern Ireland",
+          "Uzbekistan",
+          "Venezuela (Bolivarian Republic of)",
+          "Viet Nam"
+        ]
+      },
+      {
+        "cluster": 2,
+        "name": "high n per ha \u00b7 high cereal yield",
+        "n": 5,
+        "members": [
+          "Egypt",
+          "Kuwait",
+          "Oman",
+          "Qatar",
+          "United Arab Emirates"
+        ]
+      },
+      {
+        "cluster": 3,
+        "name": "high cereal per head \u00b7 high agrifood co2e per head",
+        "n": 22,
+        "members": [
+          "Argentina",
+          "Australia",
+          "Belarus",
+          "Brazil",
+          "Bulgaria",
+          "Canada",
+          "Denmark",
+          "Estonia",
+          "France",
+          "Guyana",
+          "Hungary",
+          "Kazakhstan",
+          "Latvia",
+          "Lithuania",
+          "Paraguay",
+          "Poland",
+          "Romania",
+          "Serbia",
+          "Suriname",
+          "Ukraine",
+          "United States of America",
+          "Uruguay"
+        ]
+      }
+    ]
+  },
+  "projections": {
+    "task": "Log-linear trend projection of regional cereal production to 2030",
+    "fit_window": "2005 - latest",
+    "regions": {
+      "Africa": {
+        "trend_pct_per_year": 2.5697832896123263,
+        "projected_2030_mt": 272.45886528050244,
+        "latest_mt": 222.72042315000002,
+        "latest_year": 2024
+      },
+      "Americas": {
+        "trend_pct_per_year": 1.9409846385893825,
+        "projected_2030_mt": 945.5958359322987,
+        "latest_mt": 817.28317764,
+        "latest_year": 2024
+      },
+      "Asia": {
+        "trend_pct_per_year": 1.8076605156496894,
+        "projected_2030_mt": 1753.0985937853513,
+        "latest_mt": 1563.92689484,
+        "latest_year": 2024
+      },
+      "Europe": {
+        "trend_pct_per_year": 1.2954977228997633,
+        "projected_2030_mt": 587.5647694787441,
+        "latest_mt": 475.79768085,
+        "latest_year": 2024
+      },
+      "Oceania": {
+        "trend_pct_per_year": 2.710802235347054,
+        "projected_2030_mt": 58.97399125188572,
+        "latest_mt": 53.494564450000006,
+        "latest_year": 2024
+      },
+      "World": {
+        "trend_pct_per_year": 1.8134116025400715,
+        "projected_2030_mt": 3615.862805189648,
+        "latest_mt": 3133.22274092,
+        "latest_year": 2024
+      }
+    }
+  }
+}

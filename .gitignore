@@ -1,0 +1,17 @@
+# Raw FAOSTAT bulk archives (re-downloaded by the pipeline) and the built database
+data/raw/
+data/faostat.db
+data/faostat.db-journal
+data/interim/
+
+# Python
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# OS / editor
+.DS_Store
+
+# Dashboard data is inlined into docs/index.html; the standalone JSON is a build by-product
+docs/data/

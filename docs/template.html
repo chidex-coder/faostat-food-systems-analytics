@@ -1,0 +1,666 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Food Systems Explorer</title>
+<meta name="description" content="Interactive analytics on FAOSTAT: production, food security, inputs, land, climate, prices and predictive models.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌾</text></svg>">
+<script src="https://cdn.plot.ly/plotly-2.35.2.min.js" charset="utf-8"></script>
+<style>
+:root{
+  color-scheme:light;
+  --surface:#fcfcfb; --surface-2:#f4f3ef; --surface-3:#ebeae5; --border:#e2e1dc; --grid:#e7e6e2;
+  --text:#0b0b0b; --text-2:#52514e; --text-3:#8a8985;
+  --accent:#2a78d6; --accent-soft:#e6f0fb;
+  --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a; --s4:#eda100; --s5:#e87ba4; --s6:#008300; --s7:#4a3aa7; --s8:#e34948;
+  --good:#0ca30c; --warn:#fab219; --serious:#ec835a; --critical:#d03b3b;
+  --radius:10px; --shadow:0 1px 2px rgba(0,0,0,.05);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --surface:#1a1a19; --surface-2:#222221; --surface-3:#2c2c2a; --border:#34342f; --grid:#2e2e2b;
+    --text:#ffffff; --text-2:#c3c2b7; --text-3:#8f8e86;
+    --accent:#3987e5; --accent-soft:#1d2a3b;
+    --s1:#3987e5; --s2:#d95926; --s3:#199e70; --s4:#c98500; --s5:#d55181; --s6:#008300; --s7:#9085e9; --s8:#e66767;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --surface:#1a1a19; --surface-2:#222221; --surface-3:#2c2c2a; --border:#34342f; --grid:#2e2e2b;
+  --text:#ffffff; --text-2:#c3c2b7; --text-3:#8f8e86;
+  --accent:#3987e5; --accent-soft:#1d2a3b;
+  --s1:#3987e5; --s2:#d95926; --s3:#199e70; --s4:#c98500; --s5:#d55181; --s6:#008300; --s7:#9085e9; --s8:#e66767;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--surface);color:var(--text);font:14px/1.45 Inter,"Helvetica Neue",Arial,sans-serif}
+a{color:var(--accent)}
+header{padding:18px 16px 0;max-width:1400px;margin:0 auto}
+header h1{margin:0;font-size:22px;font-weight:650;letter-spacing:-.01em}
+header p{margin:4px 0 0;color:var(--text-2)}
+.topbar{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.topbar .actions{display:flex;gap:8px;align-items:center}
+nav.tabs{display:flex;gap:4px;overflow-x:auto;border-bottom:1px solid var(--border);margin-top:14px;scrollbar-width:none}
+nav.tabs button{background:none;border:0;border-bottom:2px solid transparent;padding:10px 12px;color:var(--text-2);font:inherit;font-weight:550;cursor:pointer;white-space:nowrap}
+nav.tabs button[aria-selected="true"]{color:var(--text);border-bottom-color:var(--accent)}
+main{max-width:1400px;margin:0 auto;padding:0 16px 48px}
+.filters{position:sticky;top:0;z-index:5;background:var(--surface);padding:12px 0;border-bottom:1px solid var(--border);display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center}
+.filters .group{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.filters label{color:var(--text-2);font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.04em}
+.chip{border:1px solid var(--border);background:var(--surface-2);color:var(--text-2);border-radius:999px;padding:4px 10px;font:inherit;font-size:13px;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+.chip .dot{width:9px;height:9px;border-radius:50%;background:var(--c)}
+.chip[aria-pressed="true"]{background:var(--surface);color:var(--text);border-color:var(--c);box-shadow:inset 0 0 0 1px var(--c)}
+select,input[type="search"],input[type="number"]{font:inherit;background:var(--surface-2);color:var(--text);border:1px solid var(--border);border-radius:8px;padding:6px 8px;max-width:260px}
+.range{display:flex;align-items:center;gap:8px}
+.range .track{position:relative;width:220px;height:28px}
+.range input[type="range"]{position:absolute;left:0;top:0;width:100%;margin:0;background:none;pointer-events:none;-webkit-appearance:none;appearance:none;height:28px}
+.range input[type="range"]::-webkit-slider-thumb{pointer-events:auto;-webkit-appearance:none;appearance:none;width:16px;height:16px;border-radius:50%;background:var(--accent);border:2px solid var(--surface);box-shadow:0 0 0 1px var(--border);cursor:pointer}
+.range input[type="range"]::-moz-range-thumb{pointer-events:auto;width:14px;height:14px;border-radius:50%;background:var(--accent);border:2px solid var(--surface);cursor:pointer}
+.range .rail{position:absolute;left:0;right:0;top:12px;height:4px;background:var(--surface-3);border-radius:2px}
+.range .fill{position:absolute;top:12px;height:4px;background:var(--accent);border-radius:2px}
+.range output{font-variant-numeric:tabular-nums;color:var(--text-2);min-width:88px}
+.btn{font:inherit;border:1px solid var(--border);background:var(--surface-2);color:var(--text);border-radius:8px;padding:6px 10px;cursor:pointer}
+.btn:hover{background:var(--surface-3)}
+section.tab{display:none;padding-top:16px}
+section.tab[data-active="true"]{display:block}
+.grid{display:grid;gap:14px}
+.grid.kpi{grid-template-columns:repeat(auto-fit,minmax(180px,1fr))}
+.grid.two{grid-template-columns:repeat(auto-fit,minmax(420px,1fr))}
+.grid.three{grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:12px 14px;min-width:0}
+.card h3{margin:0 0 6px;font-size:14px;font-weight:600}
+.card .sub{color:var(--text-2);font-size:12px;margin-bottom:6px}
+.card .controls{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:6px}
+.tile .label{color:var(--text-2);font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.04em}
+.tile .value{font-size:26px;font-weight:650;letter-spacing:-.01em;font-variant-numeric:tabular-nums;margin-top:4px}
+.tile .value small{font-size:13px;color:var(--text-2);font-weight:500;margin-left:4px}
+.tile .delta{font-size:12px;color:var(--text-2);margin-top:2px}
+.tile .delta b{font-weight:600}
+.tile .delta.up-good b,.tile .delta.down-good b{color:var(--good)}
+.tile .delta.up-bad b,.tile .delta.down-bad b{color:var(--critical)}
+.plot{width:100%;min-height:340px}
+.plot.tall{min-height:460px}
+.plot.short{min-height:260px}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th,td{text-align:left;padding:6px 8px;border-bottom:1px solid var(--border);vertical-align:top}
+th{color:var(--text-2);font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:.03em;cursor:pointer;user-select:none;white-space:nowrap}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+.tablewrap{overflow:auto;max-height:520px}
+.badge{display:inline-block;padding:1px 8px;border-radius:999px;font-size:12px;font-weight:600}
+.badge.pass{background:rgba(12,163,12,.12);color:var(--good)}
+.badge.warn{background:rgba(250,178,25,.18);color:#8a5d00}
+.badge.fail{background:rgba(208,59,59,.14);color:var(--critical)}
+details{border:1px solid var(--border);border-radius:var(--radius);margin-bottom:8px;background:var(--surface)}
+summary{padding:10px 14px;cursor:pointer;font-weight:600;list-style:none;display:flex;justify-content:space-between;gap:10px}
+summary::-webkit-details-marker{display:none}
+summary .theme{color:var(--text-3);font-weight:500;font-size:12px}
+details .body{padding:0 14px 12px;color:var(--text-2)}
+details ul{margin:6px 0 8px;padding-left:18px}
+details li{margin:4px 0}
+.muted{color:var(--text-2)}
+.small{font-size:12px}
+.note{background:var(--accent-soft);border:1px solid var(--border);border-radius:var(--radius);padding:10px 14px;color:var(--text-2);font-size:13px}
+.legend-dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;vertical-align:middle}
+footer{max-width:1400px;margin:0 auto;padding:12px 16px 32px;color:var(--text-3);font-size:12px}
+@media (max-width:640px){
+  .grid.two,.grid.three{grid-template-columns:1fr}
+  .range .track{width:160px}
+  header h1{font-size:19px}
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="topbar">
+    <div>
+      <h1>Food Systems Explorer</h1>
+      <p>Production, food security, inputs, land, climate and prices from FAOSTAT, with predictive models. <span id="vintage" class="small"></span></p>
+    </div>
+    <div class="actions">
+      <button class="btn" id="themeBtn" title="Toggle light / dark">◐ Theme</button>
+      <a class="btn" id="repoLink" href="https://github.com/chidex-coder/faostat-food-systems-analytics" target="_blank" rel="noopener">Source ↗</a>
+    </div>
+  </div>
+  <nav class="tabs" role="tablist" id="tabs">
+    <button role="tab" data-tab="overview" aria-selected="true">Overview</button>
+    <button role="tab" data-tab="production">Production</button>
+    <button role="tab" data-tab="security">Food security</button>
+    <button role="tab" data-tab="inputs">Inputs, land &amp; climate</button>
+    <button role="tab" data-tab="explore">Explore</button>
+    <button role="tab" data-tab="predict">Predictions</button>
+    <button role="tab" data-tab="insights">Insights</button>
+    <button role="tab" data-tab="data">Data &amp; governance</button>
+  </nav>
+</header>
+<main>
+  <div class="filters" id="filters">
+    <div class="group"><label>Regions</label><span id="regionChips"></span></div>
+    <div class="group"><label>Country</label>
+      <select id="countrySel"><option value="">All countries</option></select>
+    </div>
+    <div class="group"><label>Years</label>
+      <div class="range">
+        <div class="track"><div class="rail"></div><div class="fill" id="rangeFill"></div>
+          <input type="range" id="yearMin"><input type="range" id="yearMax"></div>
+        <output id="yearOut"></output>
+      </div>
+    </div>
+    <button class="btn" id="resetBtn">Reset</button>
+  </div>
+
+  <!-- OVERVIEW -->
+  <section class="tab" data-tab="overview" data-active="true">
+    <div class="grid kpi" id="kpis"></div>
+    <div class="grid two" style="margin-top:14px">
+      <div class="card">
+        <div class="controls"><h3 style="margin:0">Trend by region</h3><select id="ovIndicator"></select></div>
+        <div class="sub" id="ovTrendSub"></div>
+        <div id="ovTrend" class="plot"></div>
+      </div>
+      <div class="card">
+        <div class="controls"><h3 style="margin:0">World map</h3><span class="muted small" id="ovMapSub"></span></div>
+        <div id="ovMap" class="plot"></div>
+      </div>
+    </div>
+    <div class="grid two" style="margin-top:14px">
+      <div class="card"><h3>Highest values</h3><div class="sub" id="ovTopSub"></div><div id="ovTop" class="plot"></div></div>
+      <div class="card"><h3>Lowest values</h3><div class="sub" id="ovBottomSub"></div><div id="ovBottom" class="plot"></div></div>
+    </div>
+  </section>
+
+  <!-- PRODUCTION -->
+  <section class="tab" data-tab="production">
+    <div class="card" style="margin-bottom:14px">
+      <div class="controls">
+        <label class="small muted">Commodity</label><select id="cropSel"></select>
+        <label class="small muted">Measure</label>
+        <select id="cropMeasure"><option value="production_mt">Production (Mt)</option><option value="yield_t_ha">Yield (t/ha)</option><option value="area_mha">Area harvested (Mha)</option></select>
+      </div>
+    </div>
+    <div class="grid two">
+      <div class="card"><h3 id="prRegionTitle">By region</h3><div id="prRegion" class="plot"></div></div>
+      <div class="card"><h3 id="prTopTitle">Top producers</h3><div id="prTop" class="plot"></div></div>
+    </div>
+    <div class="grid two" style="margin-top:14px">
+      <div class="card"><h3 id="prFocusTitle">Production, area and yield</h3><div class="sub">Indexed to the first year in range = 100. Yield gains versus area expansion at a glance.</div><div id="prFocus" class="plot"></div></div>
+      <div class="card"><h3 id="prMapTitle">Map</h3><div id="prMap" class="plot"></div></div>
+    </div>
+  </section>
+
+  <!-- FOOD SECURITY -->
+  <section class="tab" data-tab="security">
+    <div class="card" style="margin-bottom:14px">
+      <div class="controls"><label class="small muted">Indicator</label><select id="fsIndicator"></select>
+        <span class="muted small" id="fsNote"></span></div>
+    </div>
+    <div class="grid two">
+      <div class="card"><h3 id="fsMapTitle">Map</h3><div id="fsMap" class="plot"></div></div>
+      <div class="card"><h3>Trend by region</h3><div class="sub">FAO publishes regional aggregates only for regions where the indicator is estimable; missing lines mean no aggregate.</div><div id="fsTrend" class="plot"></div></div>
+    </div>
+    <div class="grid two" style="margin-top:14px">
+      <div class="card"><h3 id="fsScatterTitle">Versus income</h3><div class="sub">Bubble size = population. Log income axis.</div><div id="fsScatter" class="plot"></div></div>
+      <div class="card"><h3 id="fsRankTitle">Country ranking</h3><div id="fsRank" class="plot tall"></div></div>
+    </div>
+  </section>
+
+  <!-- INPUTS, LAND & CLIMATE -->
+  <section class="tab" data-tab="inputs">
+    <div class="grid two">
+      <div class="card"><h3>Nitrogen use per hectare of cropland (kg N/ha)</h3><div id="inN" class="plot short"></div></div>
+      <div class="card"><h3>Temperature change vs 1951-1980 (°C, 5-year mean)</h3><div id="inTemp" class="plot short"></div></div>
+      <div class="card"><h3>Agrifood-system emissions (Mt CO2eq)</h3><div id="inEm" class="plot short"></div></div>
+      <div class="card"><h3>Forest share of land area (%)</h3><div id="inForest" class="plot short"></div></div>
+    </div>
+    <div class="grid two" style="margin-top:14px">
+      <div class="card"><h3 id="inLandTitle">Land use composition</h3><div class="sub">Share of land area in the last year of the range.</div><div id="inLand" class="plot"></div></div>
+      <div class="card"><h3>Nitrogen intensity vs cereal yield</h3><div class="sub">Countries in the last year of the range; bubble = cereal area. Both axes log.</div><div id="inNY" class="plot"></div></div>
+    </div>
+  </section>
+
+  <!-- EXPLORE -->
+  <section class="tab" data-tab="explore">
+    <div class="card" style="margin-bottom:14px">
+      <div class="controls">
+        <label class="small muted">X</label><select id="exX"></select>
+        <label class="small muted">Y</label><select id="exY"></select>
+        <label class="small muted">Size</label><select id="exSize"><option value="population_m">Population</option><option value="cereal_production_mt">Cereal production</option><option value="">None</option></select>
+        <label class="small muted"><input type="checkbox" id="exLogX"> log X</label>
+        <label class="small muted"><input type="checkbox" id="exLogY"> log Y</label>
+        <label class="small muted"><input type="checkbox" id="exTrail"> show trails over the year range</label>
+      </div>
+      <div class="sub" id="exSub"></div>
+      <div id="exScatter" class="plot tall"></div>
+    </div>
+    <div class="card">
+      <div class="controls"><h3 style="margin:0">Country profile</h3><span class="muted small">Pick a country in the filter bar to compare it with its region and the world.</span></div>
+      <div id="exProfile" class="grid three"></div>
+    </div>
+  </section>
+
+  <!-- PREDICTIONS -->
+  <section class="tab" data-tab="predict">
+    <div class="note" style="margin-bottom:14px">Models are trained on the warehouse with strictly time-based splits (train on earlier years, test on later ones). Metrics below are from the held-out years, not the training data. See <code>models/metrics.json</code> for the full record.</div>
+    <div class="grid two">
+      <div class="card">
+        <h3 id="pdYieldTitle">Next-year cereal-yield forecast</h3>
+        <div class="sub" id="pdYieldSub"></div>
+        <div id="pdYieldChart" class="plot"></div>
+      </div>
+      <div class="card">
+        <h3>Forecast table</h3>
+        <div class="controls"><label class="small muted">Sort</label>
+          <select id="pdSort"><option value="change_pct">Largest expected change</option><option value="-change_pct">Largest expected fall</option><option value="forecast_t_ha">Highest forecast yield</option><option value="area">Country A-Z</option></select></div>
+        <div class="tablewrap" style="max-height:400px"><table id="pdYieldTable"></table></div>
+      </div>
+    </div>
+    <div class="grid two" style="margin-top:14px">
+      <div class="card">
+        <h3>Undernourishment risk score</h3>
+        <div class="sub" id="pdRiskSub"></div>
+        <div class="controls"><label class="small muted">Show countries with score ≥</label><input type="number" id="pdRiskThr" min="0" max="1" step="0.05" value="0.5" style="width:80px"></div>
+        <div id="pdRisk" class="plot tall"></div>
+      </div>
+      <div class="card">
+        <h3>Food-system typology</h3>
+        <div class="sub" id="pdTypoSub"></div>
+        <div id="pdTypo" class="plot tall"></div>
+      </div>
+    </div>
+    <div class="grid two" style="margin-top:14px">
+      <div class="card">
+        <h3>Cereal production projection</h3>
+        <div class="controls"><label class="small muted">Horizon</label><select id="pdHorizon"></select></div>
+        <div id="pdProj" class="plot"></div>
+      </div>
+      <div class="card">
+        <h3>Model scorecard</h3>
+        <div id="pdMetrics"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- INSIGHTS -->
+  <section class="tab" data-tab="insights">
+    <div class="controls" style="margin-bottom:12px"><input type="search" id="insSearch" placeholder="Search findings…" style="max-width:320px"><span class="muted small" id="insCount"></span></div>
+    <div id="insights"></div>
+  </section>
+
+  <!-- DATA & GOVERNANCE -->
+  <section class="tab" data-tab="data">
+    <div class="grid two">
+      <div class="card"><h3>Source archives and load statistics</h3><div class="sub">Every domain is a FAOSTAT bulk archive, hashed on download. Rows are dropped only for missing-value flags, out-of-scope elements/years, or exact duplicate keys.</div><div class="tablewrap"><table id="manifestTable"></table></div></div>
+      <div class="card"><h3>Provenance of loaded observations</h3><div class="sub">FAOSTAT flags: A = official, E = estimated, I = imputed, X = external organisation.</div><div id="flagsPlot" class="plot"></div></div>
+    </div>
+    <div class="grid two" style="margin-top:14px">
+      <div class="card"><h3>Data-quality gate</h3><div class="sub">Checks run on every build and stored in <code>dq_check</code>. A failure aborts the pipeline.</div><div class="tablewrap"><table id="dqTable"></table></div></div>
+      <div class="card"><h3>Schema and conventions</h3>
+        <ul class="muted" style="padding-left:18px;margin:0">
+          <li>One long fact table <code>observation(domain, area_code, item_code, element_code, year)</code> with conformed <code>dim_area / dim_item / dim_element / dim_flag / dim_domain</code>.</li>
+          <li>FAOSTAT codes are kept verbatim; item codes are text because the food-security domain uses suffixed codes (e.g. 210091F).</li>
+          <li>3-year averages such as "2020-2022" are stored at the middle year (2021) with the original label retained.</li>
+          <li>Regional aggregates (area codes ≥ 5000, plus "China" 351 and "Sub-Saharan Africa" 420) are flagged <code>is_aggregate</code> and never mixed with countries.</li>
+          <li>Countries are enriched with UN M49 region / sub-region / LDC / LLDC / SIDS via their M49 code.</li>
+          <li>Known source quirk: FS indicator 21034 "arable land equipped for irrigation" is effectively expressed against total land area, so irrigation shares are rebuilt from the land-use domain.</li>
+          <li>Population projections (to 2100) and emission scenarios (2030/2050) are excluded by the year window.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+</main>
+<footer>Data © FAO, FAOSTAT bulk downloads (<a href="https://www.fao.org/faostat" target="_blank" rel="noopener">fao.org/faostat</a>), used under the FAO statistical database terms of use. Geography from UN Statistics Division M49. Built from the warehouse on <span id="builtAt"></span>.</footer>
+
+<script>/*__DATA__*/</script>
+<script>
+(function(){
+'use strict';
+const D = window.DATA;
+const $ = (s) => document.querySelector(s);
+const REGIONS = ["Africa","Americas","Asia","Europe","Oceania"];
+const REGION_CODE = {World:5000, Africa:5100, Americas:5200, Asia:5300, Europe:5400, Oceania:5500};
+const REGION_SLOT = {Africa:"--s1", Americas:"--s2", Asia:"--s3", Europe:"--s4", Oceania:"--s5"};
+const css = (v) => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+const regionColour = (r) => r === "World" ? css("--text-2") : css(REGION_SLOT[r] || "--s7");
+const SLOTS = ["--s1","--s2","--s3","--s4","--s5","--s6","--s7","--s8"];
+const slot = (i) => css(SLOTS[i % 8]);
+const fmt = (v, dp=1) => v == null || Number.isNaN(v) ? "–" : Number(v).toLocaleString("en-GB", {maximumFractionDigits: dp, minimumFractionDigits: dp});
+const fmtInt = (v) => v == null ? "–" : Number(v).toLocaleString("en-GB", {maximumFractionDigits: 0});
+const short = (s, n = 26) => s.length > n ? s.slice(0, n - 1) + "…" : s;
+function logTicks(values) { const v = values.filter(x => x > 0); if (!v.length) return undefined; const lo = Math.floor(Math.log10(Math.min(...v))), hi = Math.ceil(Math.log10(Math.max(...v))); const out = []; for (let e = lo; e <= hi; e++) for (const m of [1, 2, 5]) { const t = m * 10 ** e; if (t >= Math.min(...v) * 0.8 && t <= Math.max(...v) * 1.25) out.push(t); } return out; }
+const tickText = (t) => t.map(v => v >= 1000 ? (v / 1000).toLocaleString("en-GB") + "k" : String(v));
+
+// ---------------------------------------------------------------- indexes
+const areaByCode = new Map(D.areas.map(a => [a.area_code, a]));
+const countries = D.areas.filter(a => !a.is_aggregate).sort((a,b) => a.area.localeCompare(b.area));
+const P = D.panel; const N = P.year.length;
+const rowsByArea = new Map();
+for (let i = 0; i < N; i++) { const c = P.area_code[i]; if (!rowsByArea.has(c)) rowsByArea.set(c, []); rowsByArea.get(c).push(i); }
+const rowIndex = new Map(); // "code:year" -> i
+for (let i = 0; i < N; i++) rowIndex.set(P.area_code[i] + ":" + P.year[i], i);
+const C = D.crops.data; const CN = C.year.length;
+const cropIndex = new Map();
+for (let i = 0; i < CN; i++) { const k = C.item_code[i] + ":" + C.area_code[i]; if (!cropIndex.has(k)) cropIndex.set(k, []); cropIndex.get(k).push(i); }
+
+// ---------------------------------------------------------------- state
+const state = { regions: new Set(REGIONS), country: "", yMin: 1990, yMax: D.meta.year_max, tab: "overview",
+  ovInd: "pou_pct", crop: "1717", cropMeasure: "production_mt", fsInd: "pou_pct", exX: "gdp_cap_ppp", exY: "pou_pct", exSize: "population_m",
+  exLogX: true, exLogY: false, exTrail: false, pdSort: "change_pct", pdThr: 0.5, pdHorizon: 2030 };
+try { const s = JSON.parse(localStorage.getItem("fse-state") || "{}"); if (s.yMin) Object.assign(state, s, {regions: new Set(s.regions || REGIONS)}); } catch (e) {}
+const saveState = () => { try { localStorage.setItem("fse-state", JSON.stringify({...state, regions: [...state.regions]})); } catch (e) {} };
+
+const selectedCountries = () => countries.filter(a => state.regions.has(a.region) && (!state.country || String(a.area_code) === state.country));
+const selectedRegionCodes = () => REGIONS.filter(r => state.regions.has(r)).map(r => REGION_CODE[r]);
+const val = (code, year, key) => { const i = rowIndex.get(code + ":" + year); return i == null ? null : P[key][i]; };
+function series(code, key, y0 = state.yMin, y1 = state.yMax) {
+  const out = {x: [], y: []}; const rows = rowsByArea.get(code) || [];
+  for (const i of rows) { const y = P.year[i]; if (y >= y0 && y <= y1 && P[key][i] != null) { out.x.push(y); out.y.push(P[key][i]); } }
+  return out;
+}
+function latestYearFor(key, year = state.yMax) { // nearest year <= year with any country data
+  for (let y = year; y >= D.meta.year_min; y--) { for (const a of countries) { const i = rowIndex.get(a.area_code + ":" + y); if (i != null && P[key][i] != null) return y; } }
+  return null;
+}
+function countryValues(key, year) {
+  const out = [];
+  for (const a of selectedCountries()) { const v = val(a.area_code, year, key); if (v != null) out.push({...a, v}); }
+  return out;
+}
+const ind = (k) => D.indicators[k];
+const indLabel = (k) => { const m = ind(k); return `${m.label} (${m.unit})`; };
+
+// ---------------------------------------------------------------- plotly base layout
+function base(extra = {}) {
+  const text = css("--text"), text2 = css("--text-2"), grid = css("--grid"), surf = css("--surface");
+  return Object.assign({
+    font: {family: "Inter, Helvetica Neue, Arial, sans-serif", size: 12, color: text},
+    paper_bgcolor: surf, plot_bgcolor: surf, margin: {l: 52, r: 16, t: 12, b: 44},
+    hoverlabel: {bgcolor: css("--surface-2"), bordercolor: grid, font: {color: text, size: 12}},
+    legend: {orientation: "h", y: -0.18, x: 0, font: {color: text2}},
+    xaxis: {showgrid: false, zeroline: false, linecolor: grid, tickcolor: grid, ticks: "outside", title: {font: {color: text2}}, automargin: true},
+    yaxis: {gridcolor: grid, zeroline: false, showline: false, title: {font: {color: text2}}, automargin: true},
+  }, extra);
+}
+const CONFIG = {displaylogo: false, responsive: true, modeBarButtonsToRemove: ["lasso2d", "select2d", "autoScale2d"]};
+const plot = (id, traces, layout) => Plotly.react(id, traces, layout, CONFIG);
+function lineByRegion(key, includeWorld = true, y0 = state.yMin, y1 = state.yMax) {
+  const traces = [];
+  const codes = (includeWorld ? [5000] : []).concat(selectedRegionCodes());
+  for (const code of codes) {
+    const name = areaByCode.get(code).area; const s = series(code, key, y0, y1); if (!s.x.length) continue;
+    traces.push({x: s.x, y: s.y, name, mode: "lines", line: {color: regionColour(name), width: name === "World" ? 2.5 : 2, dash: name === "World" ? "dot" : "solid"},
+      hovertemplate: `<b>${name}</b> %{x}: %{y:,.${ind(key).dp}f} ${ind(key).unit}<extra></extra>`});
+  }
+  if (state.country) { const a = areaByCode.get(+state.country); const s = series(a.area_code, key, y0, y1);
+    if (s.x.length) traces.push({x: s.x, y: s.y, name: a.area, mode: "lines+markers", line: {color: css("--s7"), width: 2.5}, marker: {size: 5}, hovertemplate: `<b>${a.area}</b> %{x}: %{y:,.${ind(key).dp}f} ${ind(key).unit}<extra></extra>`}); }
+  return traces;
+}
+function choropleth(id, key, year, title) {
+  const rows = countryValues(key, year); const m = ind(key);
+  const seq = ["#cde2fb","#9ec5f4","#6da7ec","#3987e5","#256abf","#184f95","#0d366b"].map((c, i) => [i / 6, c]);
+  const scale = m.better === "low" ? seq : seq;
+  const trace = {type: "choropleth", locations: rows.map(r => r.iso3), z: rows.map(r => r.v), text: rows.map(r => r.area),
+    colorscale: scale, reversescale: false, marker: {line: {color: css("--surface"), width: 0.5}},
+    colorbar: {thickness: 8, len: 0.8, outlinewidth: 0, title: {text: m.unit, side: "right"}, tickfont: {color: css("--text-2")}},
+    hovertemplate: `<b>%{text}</b><br>${m.label}: %{z:,.${m.dp}f} ${m.unit}<extra></extra>`};
+  const layout = base({margin: {l: 0, r: 0, t: 0, b: 0}, geo: {showframe: false, showcoastlines: false, projection: {type: "natural earth"}, bgcolor: css("--surface"), landcolor: css("--surface-3"), lakecolor: css("--surface"), showcountries: true, countrycolor: css("--surface")}});
+  plot(id, [trace], layout);
+  return rows.length;
+}
+function hbar(id, rows, key, colourByRegion = true, height) {
+  const m = ind(key);
+  const trace = {type: "bar", orientation: "h", y: rows.map(r => short(r.area)), x: rows.map(r => r.v), text: rows.map(r => r.area), textposition: "none", marker: {color: rows.map(r => colourByRegion ? regionColour(r.region) : css("--s1"))},
+    hovertemplate: `<b>%{text}</b>: %{x:,.${m.dp}f} ${m.unit}<extra></extra>`};
+  plot(id, [trace], base({height, margin: {l: 150, r: 16, t: 6, b: 40}, yaxis: {autorange: "reversed", gridcolor: css("--surface")}, xaxis: {gridcolor: css("--grid"), showgrid: true, title: {text: m.unit}}, bargap: 0.35}));
+}
+
+// ---------------------------------------------------------------- filters UI
+function buildFilters() {
+  const chips = $("#regionChips"); chips.innerHTML = "";
+  for (const r of REGIONS) { const b = document.createElement("button"); b.className = "chip"; b.style.setProperty("--c", regionColour(r)); b.innerHTML = `<span class="dot"></span>${r}`;
+    b.setAttribute("aria-pressed", state.regions.has(r)); b.onclick = () => { if (state.regions.has(r) && state.regions.size > 1) state.regions.delete(r); else state.regions.add(r); b.setAttribute("aria-pressed", state.regions.has(r)); render(); }; chips.appendChild(b); }
+  const sel = $("#countrySel"); for (const a of countries) { const o = document.createElement("option"); o.value = a.area_code; o.textContent = a.area; sel.appendChild(o); }
+  sel.value = state.country; sel.onchange = () => { state.country = sel.value; render(); };
+  const lo = $("#yearMin"), hi = $("#yearMax"); for (const el of [lo, hi]) { el.min = D.meta.year_min; el.max = D.meta.year_max; }
+  lo.value = state.yMin; hi.value = state.yMax;
+  const upd = (commit) => { let a = +lo.value, b = +hi.value; if (a > b - 1) { if (commit === lo) { a = b - 1; lo.value = a; } else { b = a + 1; hi.value = b; } }
+    state.yMin = a; state.yMax = b; const span = D.meta.year_max - D.meta.year_min; $("#rangeFill").style.left = (100 * (a - D.meta.year_min) / span) + "%"; $("#rangeFill").style.width = (100 * (b - a) / span) + "%"; $("#yearOut").textContent = `${a} – ${b}`; };
+  lo.oninput = () => upd(lo); hi.oninput = () => upd(hi); lo.onchange = hi.onchange = () => render(); upd();
+  $("#resetBtn").onclick = () => { state.regions = new Set(REGIONS); state.country = ""; state.yMin = 1990; state.yMax = D.meta.year_max; buildFiltersValues(); render(); };
+  $("#themeBtn").onclick = () => { const cur = document.documentElement.getAttribute("data-theme"); const dark = cur ? cur === "dark" : matchMedia("(prefers-color-scheme: dark)").matches; document.documentElement.setAttribute("data-theme", dark ? "light" : "dark"); try { localStorage.setItem("fse-theme", dark ? "light" : "dark"); } catch (e) {} buildFilters(); render(); };
+  document.querySelectorAll("#tabs button").forEach(b => b.onclick = () => showTab(b.dataset.tab));
+}
+function buildFiltersValues() { document.querySelectorAll("#regionChips .chip").forEach((b, i) => b.setAttribute("aria-pressed", state.regions.has(REGIONS[i]))); $("#countrySel").value = state.country; $("#yearMin").value = state.yMin; $("#yearMax").value = state.yMax; $("#yearMin").dispatchEvent(new Event("input")); }
+function showTab(t) { state.tab = t; document.querySelectorAll("#tabs button").forEach(b => b.setAttribute("aria-selected", b.dataset.tab === t)); document.querySelectorAll("section.tab").forEach(s => s.dataset.active = s.dataset.tab === t); render(); window.scrollTo({top: 0}); }
+function fillSelect(sel, keys, current) { sel.innerHTML = ""; let group = null, og = null; for (const k of keys) { const m = ind(k); if (m.group !== group) { group = m.group; og = document.createElement("optgroup"); og.label = group; sel.appendChild(og); } const o = document.createElement("option"); o.value = k; o.textContent = m.label; og.appendChild(o); } sel.value = current; }
+
+// ---------------------------------------------------------------- overview
+const KPI_KEYS = ["cereal_production_mt", "pou_pct", "undernourished_m", "unaffordable_pct", "agrifood_mt_co2eq", "temp_change_c"];
+function renderOverview() {
+  const k = $("#kpis"); k.innerHTML = "";
+  for (const key of KPI_KEYS) {
+    const m = ind(key); const s = series(5000, key, D.meta.year_min, D.meta.year_max); if (!s.x.length) continue;
+    const y1 = s.x[s.x.length - 1], v1 = s.y[s.y.length - 1]; const j = s.x.indexOf(y1 - 10); const v0 = j >= 0 ? s.y[j] : null;
+    let delta = "", cls = "";
+    if (v0 != null) { const d = key === "temp_change_c" ? v1 - v0 : 100 * (v1 / v0 - 1); const up = d > 0; cls = up ? (m.better === "low" ? "up-bad" : "up-good") : (m.better === "low" ? "down-good" : "down-bad");
+      delta = `<b>${up ? "▲" : "▼"} ${key === "temp_change_c" ? fmt(Math.abs(d), 2) + " °C" : fmt(Math.abs(d), 1) + " %"}</b> vs ${y1 - 10}`; }
+    k.insertAdjacentHTML("beforeend", `<div class="card tile"><div class="label">${m.label}</div><div class="value">${key === "temp_change_c" && v1 > 0 ? "+" : ""}${fmt(v1, m.dp)}<small>${m.unit} · World ${y1}</small></div><div class="delta ${cls}">${delta}</div></div>`);
+  }
+  const key = state.ovInd; const m = ind(key);
+  plot("ovTrend", lineByRegion(key), base({yaxis: {title: {text: m.unit}}, hovermode: "x unified"}));
+  $("#ovTrendSub").textContent = `${m.label}: regional aggregates as published by FAO, ${state.yMin}–${state.yMax}.`;
+  const y = latestYearFor(key); const n = y ? choropleth("ovMap", key, y) : 0;
+  $("#ovMapSub").textContent = y ? `${m.label}, ${y} · ${n} countries in view` : "no country data";
+  const rows = y ? countryValues(key, y).sort((a, b) => b.v - a.v) : [];
+  hbar("ovTop", rows.slice(0, 12), key); hbar("ovBottom", rows.slice(-12).reverse(), key);
+  $("#ovTopSub").textContent = $("#ovBottomSub").textContent = y ? `${m.label}, ${y}` : "";
+}
+
+// ---------------------------------------------------------------- production
+function cropSeries(item, code, measure, y0 = state.yMin, y1 = state.yMax) { const out = {x: [], y: []}; for (const i of (cropIndex.get(item + ":" + code) || [])) { const y = C.year[i]; if (y >= y0 && y <= y1 && C[measure][i] != null) { out.x.push(y); out.y.push(C[measure][i]); } } return out; }
+function renderProduction() {
+  const item = state.crop, name = D.crops.items[item], meas = state.cropMeasure;
+  const mlabel = {production_mt: "Production (Mt)", yield_t_ha: "Yield (t/ha)", area_mha: "Area harvested (Mha)"}[meas];
+  const units = {production_mt: "Mt", yield_t_ha: "t/ha", area_mha: "Mha"};
+  const traces = [];
+  for (const code of [5000].concat(selectedRegionCodes())) { const r = areaByCode.get(code).area; const s = cropSeries(item, code, meas); if (!s.x.length) continue;
+    traces.push({x: s.x, y: s.y, name: r, mode: "lines", line: {color: regionColour(r), width: r === "World" ? 2.5 : 2, dash: r === "World" ? "dot" : "solid"}, hovertemplate: `<b>${r}</b> %{x}: %{y:,.2f} ${units[meas]}<extra></extra>`}); }
+  if (state.country) { const a = areaByCode.get(+state.country); const s = cropSeries(item, a.area_code, meas); if (s.x.length) traces.push({x: s.x, y: s.y, name: a.area, mode: "lines+markers", marker: {size: 5}, line: {color: css("--s7"), width: 2.5}, hovertemplate: `<b>${a.area}</b> %{x}: %{y:,.2f} ${units[meas]}<extra></extra>`}); }
+  $("#prRegionTitle").textContent = `${name}: ${mlabel.toLowerCase()} by region`;
+  plot("prRegion", traces, base({yaxis: {title: {text: units[meas]}}, hovermode: "x unified"}));
+  // top producers in last year with data
+  let year = null; for (let y = state.yMax; y >= state.yMin && !year; y--) for (const a of countries) if ((cropIndex.get(item + ":" + a.area_code) || []).some(i => C.year[i] === y && C[meas][i] != null)) { year = y; break; }
+  const rows = [];
+  if (year) for (const a of selectedCountries()) for (const i of (cropIndex.get(item + ":" + a.area_code) || [])) if (C.year[i] === year && C[meas][i] != null && (meas !== "yield_t_ha" || (C.area_mha[i] || 0) >= 0.05)) rows.push({...a, v: C[meas][i]});
+  rows.sort((a, b) => b.v - a.v);
+  $("#prTopTitle").textContent = `${name}: top 15 by ${mlabel.toLowerCase()}, ${year || "–"}` + (meas === "yield_t_ha" ? " (≥ 50 kha harvested)" : "");
+  plot("prTop", [{type: "bar", orientation: "h", y: rows.slice(0, 15).map(r => short(r.area)), x: rows.slice(0, 15).map(r => r.v), text: rows.slice(0, 15).map(r => r.area), textposition: "none", marker: {color: rows.slice(0, 15).map(r => regionColour(r.region))}, hovertemplate: `<b>%{text}</b>: %{x:,.2f} ${units[meas]}<extra></extra>`}],
+    base({margin: {l: 160, r: 16, t: 6, b: 40}, yaxis: {autorange: "reversed", gridcolor: css("--surface")}, xaxis: {showgrid: true, gridcolor: css("--grid"), title: {text: units[meas]}}, bargap: 0.35}));
+  // decomposition for focus area
+  const focus = state.country ? +state.country : (state.regions.size === 1 ? REGION_CODE[[...state.regions][0]] : 5000);
+  const fname = areaByCode.get(focus).area;
+  const p = cropSeries(item, focus, "production_mt"), a = cropSeries(item, focus, "area_mha"), yl = cropSeries(item, focus, "yield_t_ha");
+  const idx = (s) => ({x: s.x, y: s.y.map(v => 100 * v / s.y[0])});
+  const dt = [["Production", p, "--s1"], ["Area harvested", a, "--s2"], ["Yield", yl, "--s3"]].filter(([, s]) => s.x.length > 1).map(([n, s, c]) => ({...idx(s), name: n, mode: "lines", line: {color: css(c), width: 2}, hovertemplate: `<b>${n}</b> %{x}: %{y:.0f}<extra></extra>`}));
+  $("#prFocusTitle").textContent = `${name} in ${fname}: production, area and yield`;
+  plot("prFocus", dt, base({yaxis: {title: {text: `Index (${p.x[0] || state.yMin} = 100)`}}, hovermode: "x unified", shapes: [{type: "line", x0: 0, x1: 1, xref: "paper", y0: 100, y1: 100, line: {color: css("--text-3"), width: 1}}]}));
+  // map
+  $("#prMapTitle").textContent = `${name}: ${mlabel.toLowerCase()}, ${year || "–"}`;
+  const seq = ["#cde2fb","#9ec5f4","#6da7ec","#3987e5","#256abf","#184f95","#0d366b"].map((c, i) => [i / 6, c]);
+  plot("prMap", [{type: "choropleth", locations: rows.map(r => r.iso3), z: rows.map(r => r.v), text: rows.map(r => r.area), colorscale: seq, marker: {line: {color: css("--surface"), width: 0.5}},
+    colorbar: {thickness: 8, len: 0.8, outlinewidth: 0, title: {text: units[meas], side: "right"}}, hovertemplate: `<b>%{text}</b>: %{z:,.2f} ${units[meas]}<extra></extra>`}],
+    base({margin: {l: 0, r: 0, t: 0, b: 0}, geo: {showframe: false, showcoastlines: false, projection: {type: "natural earth"}, bgcolor: css("--surface"), landcolor: css("--surface-3"), showcountries: true, countrycolor: css("--surface")}}));
+}
+
+// ---------------------------------------------------------------- food security
+function scatterVsIncome(id, key, year, sizeKey = "population_m", logX = true) {
+  const m = ind(key); const traces = [];
+  const all = countryValues(key, year).map(r => ({...r, x: val(r.area_code, year, "gdp_cap_ppp") ?? val(r.area_code, latestYearFor("gdp_cap_ppp", year), "gdp_cap_ppp"), s: sizeKey ? val(r.area_code, year, sizeKey) : null})).filter(r => r.x != null && r.x > 0);
+  const smax = Math.max(...all.map(r => r.s || 0), 1);
+  for (const reg of REGIONS) { const rows = all.filter(r => r.region === reg); if (!rows.length) continue;
+    traces.push({type: "scatter", mode: "markers", name: reg, x: rows.map(r => r.x), y: rows.map(r => r.v), text: rows.map(r => r.area),
+      marker: {color: regionColour(reg), size: rows.map(r => sizeKey ? 7 + 32 * Math.sqrt((r.s || 0) / smax) : 9), opacity: 0.8, line: {width: 1.2, color: css("--surface")}},
+      hovertemplate: `<b>%{text}</b><br>GDP/cap: %{x:,.0f} Int$<br>${m.label}: %{y:,.${m.dp}f} ${m.unit}<extra></extra>`}); }
+  const tv = logX ? logTicks(all.map(r => r.x)) : undefined;
+  plot(id, traces, base({xaxis: {type: logX ? "log" : "linear", title: {text: "GDP per capita, PPP (Int$)"}, showgrid: false, tickvals: tv, ticktext: tv && tickText(tv)}, yaxis: {title: {text: m.unit}}}));
+}
+function renderSecurity() {
+  const key = state.fsInd, m = ind(key); const y = latestYearFor(key);
+  $("#fsNote").textContent = y ? `Latest country data: ${y}. Map and ranking use the last year in range with data (${y}).` : "";
+  $("#fsMapTitle").textContent = `${m.label}, ${y || "–"}`;
+  if (y) choropleth("fsMap", key, y);
+  plot("fsTrend", lineByRegion(key), base({yaxis: {title: {text: m.unit}}, hovermode: "x unified"}));
+  $("#fsScatterTitle").textContent = `${m.label} versus income, ${y || "–"}`;
+  if (y) scatterVsIncome("fsScatter", key, y);
+  const rows = y ? countryValues(key, y).sort((a, b) => (m.better === "high" ? a.v - b.v : b.v - a.v)) : [];
+  $("#fsRankTitle").textContent = `${m.label}: ${m.better === "high" ? "lowest" : "highest"} 25, ${y || "–"}`;
+  hbar("fsRank", rows.slice(0, 25), key, true, 560);
+}
+
+// ---------------------------------------------------------------- inputs, land & climate
+function renderInputs() {
+  const small = (id, key, roll) => { let tr = lineByRegion(key); if (roll) tr = tr.map(t => ({...t, y: t.y.map((v, i, arr) => { const w = arr.slice(Math.max(0, i - 4), i + 1); return w.reduce((a, b) => a + b, 0) / w.length; })})); plot(id, tr, base({height: 260, margin: {l: 48, r: 12, t: 8, b: 40}, showlegend: id === "inN", hovermode: "x unified"})); };
+  small("inN", "n_kg_per_ha"); small("inTemp", "temp_change_c", true); small("inEm", "agrifood_mt_co2eq"); small("inForest", "forest_share_pct");
+  const y = latestYearFor("cropland_share_pct");
+  const codes = state.country ? [+state.country] : [5000].concat(selectedRegionCodes());
+  const names = codes.map(c => areaByCode.get(c).area);
+  const comp = [["Cropland", "cropland_share_pct", "--s1"], ["Pasture", "pasture_share_pct", "--s3"], ["Forest", "forest_share_pct", "--s6"]];
+  const tr = comp.map(([n, k, c]) => ({type: "bar", name: n, x: names, y: codes.map(code => val(code, y, k)), marker: {color: css(c)}, hovertemplate: `%{x} · ${n}: %{y:.1f} %<extra></extra>`}));
+  const other = {type: "bar", name: "Other land", x: names, y: codes.map(code => { const s = comp.reduce((a, [, k]) => a + (val(code, y, k) || 0), 0); return Math.max(0, 100 - s); }), marker: {color: css("--surface-3")}, hovertemplate: "%{x} · Other: %{y:.1f} %<extra></extra>"};
+  $("#inLandTitle").textContent = `Land use composition, ${y}`;
+  plot("inLand", tr.concat([other]), base({barmode: "stack", bargap: 0.4, yaxis: {title: {text: "% of land area"}}}));
+  const yy = latestYearFor("n_kg_per_ha"); const rows = countryValues("n_kg_per_ha", yy).map(r => ({...r, y: val(r.area_code, yy, "cereal_yield_t_ha"), s: val(r.area_code, yy, "cereal_area_mha")})).filter(r => r.v >= 1 && r.y > 0 && r.s >= 0.05);
+  const smax = Math.max(...rows.map(r => r.s), 0.1); const tvx = logTicks(rows.map(r => r.v)), tvy = logTicks(rows.map(r => r.y));
+  plot("inNY", REGIONS.filter(r => state.regions.has(r)).map(reg => { const rr = rows.filter(r => r.region === reg); return {type: "scatter", mode: "markers", name: reg, x: rr.map(r => r.v), y: rr.map(r => r.y), text: rr.map(r => r.area), marker: {color: regionColour(reg), size: rr.map(r => 7 + 30 * Math.sqrt(r.s / smax)), opacity: 0.8, line: {width: 1.2, color: css("--surface")}}, hovertemplate: `<b>%{text}</b><br>N: %{x:.1f} kg/ha · yield %{y:.2f} t/ha<extra></extra>`}; }),
+    base({xaxis: {type: "log", title: {text: `kg N per ha cropland, ${yy}`}, tickvals: tvx, ticktext: tickText(tvx)}, yaxis: {type: "log", title: {text: "Cereal yield (t/ha)"}, tickvals: tvy, ticktext: tickText(tvy)}}));
+}
+
+// ---------------------------------------------------------------- explore
+function renderExplore() {
+  const kx = state.exX, ky = state.exY, ks = state.exSize; const mx = ind(kx), my = ind(ky);
+  const yx = latestYearFor(kx), yy = latestYearFor(ky); const year = Math.min(yx || 0, yy || 0);
+  const traces = [];
+  const rowsFor = (y) => selectedCountries().map(a => ({...a, x: val(a.area_code, y, kx), y: val(a.area_code, y, ky), s: ks ? val(a.area_code, y, ks) : null})).filter(r => r.x != null && r.y != null && (!state.exLogX || r.x > 0) && (!state.exLogY || r.y > 0));
+  const rows = rowsFor(year); const smax = Math.max(...rows.map(r => r.s || 0), 1);
+  if (state.exTrail) { for (const a of selectedCountries().slice(0, 400)) { const xs = [], ys = [], ts = []; for (let y = state.yMin; y <= year; y++) { const x = val(a.area_code, y, kx), v = val(a.area_code, y, ky); if (x != null && v != null) { xs.push(x); ys.push(v); ts.push(y); } } if (xs.length > 1) traces.push({type: "scatter", mode: "lines", x: xs, y: ys, text: ts, name: a.area, showlegend: false, line: {color: regionColour(a.region), width: 1}, opacity: 0.35, hovertemplate: `<b>${a.area}</b> %{text}<br>%{x:,.2f} · %{y:,.2f}<extra></extra>`}); } }
+  for (const reg of REGIONS.filter(r => state.regions.has(r))) { const rr = rows.filter(r => r.region === reg); if (!rr.length) continue;
+    traces.push({type: "scatter", mode: "markers", name: reg, x: rr.map(r => r.x), y: rr.map(r => r.y), text: rr.map(r => r.area), marker: {color: regionColour(reg), size: rr.map(r => ks ? 7 + 32 * Math.sqrt((r.s || 0) / smax) : 9), opacity: 0.85, line: {width: 1.2, color: css("--surface")}},
+      hovertemplate: `<b>%{text}</b><br>${mx.label}: %{x:,.${mx.dp}f} ${mx.unit}<br>${my.label}: %{y:,.${my.dp}f} ${my.unit}<extra></extra>`}); }
+  // correlation
+  const lx = rows.map(r => state.exLogX ? Math.log10(r.x) : r.x), ly = rows.map(r => state.exLogY ? Math.log10(r.y) : r.y);
+  let r = null; if (rows.length > 3) { const mxv = lx.reduce((a, b) => a + b) / lx.length, myv = ly.reduce((a, b) => a + b) / ly.length; let sxy = 0, sxx = 0, syy = 0; for (let i = 0; i < lx.length; i++) { sxy += (lx[i] - mxv) * (ly[i] - myv); sxx += (lx[i] - mxv) ** 2; syy += (ly[i] - myv) ** 2; } r = sxy / Math.sqrt(sxx * syy); }
+  $("#exSub").textContent = `${rows.length} countries, ${year}${r != null ? ` · Pearson r = ${r.toFixed(2)}${state.exLogX || state.exLogY ? " (on the log-transformed axes)" : ""}` : ""}. Each axis uses the latest year ≤ the range end with data for both indicators.`;
+  const tvx = state.exLogX ? logTicks(rows.map(r => r.x)) : undefined, tvy = state.exLogY ? logTicks(rows.map(r => r.y)) : undefined;
+  plot("exScatter", traces, base({height: 480, xaxis: {type: state.exLogX ? "log" : "linear", title: {text: indLabel(kx)}, tickvals: tvx, ticktext: tvx && tickText(tvx)}, yaxis: {type: state.exLogY ? "log" : "linear", title: {text: indLabel(ky)}, tickvals: tvy, ticktext: tvy && tickText(tvy)}}));
+  // profile
+  const prof = $("#exProfile"); prof.innerHTML = "";
+  if (!state.country) { prof.innerHTML = `<div class="muted">No country selected.</div>`; return; }
+  const a = areaByCode.get(+state.country); const rc = REGION_CODE[a.region];
+  const PROFILE_KEYS = ["cereal_yield_t_ha", "cereal_kg_per_cap", "pou_pct", "fies_mod_sev_pct", "stunting_pct", "obesity_pct", "unaffordable_pct", "cereal_import_dep_pct", "n_kg_per_ha", "agrifood_t_per_cap", "temp_change_c", "forest_share_pct"];
+  for (const key of PROFILE_KEYS) { const m = ind(key); const div = document.createElement("div"); div.className = "card"; div.innerHTML = `<h3>${m.label} (${m.unit})</h3><div id="prof_${key}" class="plot short"></div>`; prof.appendChild(div); }
+  for (const key of PROFILE_KEYS) {
+    const m = ind(key); const id = "prof_" + key;
+    const tr = [[a.area_code, a.area, css("--s7"), 2.5], [rc, a.region, regionColour(a.region), 2], [5000, "World", css("--text-2"), 2]].map(([c, n, col, w]) => { const s = series(c, key); return {x: s.x, y: s.y, name: n, mode: "lines", line: {color: col, width: w, dash: n === "World" ? "dot" : "solid"}, hovertemplate: `<b>${n}</b> %{x}: %{y:,.${m.dp}f}<extra></extra>`}; }).filter(t => t.x.length);
+    plot(id, tr, base({height: 240, margin: {l: 44, r: 10, t: 6, b: 36}, hovermode: "x unified", showlegend: key === "cereal_yield_t_ha"}));
+  }
+}
+
+// ---------------------------------------------------------------- predictions
+function renderPredict() {
+  const M = D.metrics; const yf = M.yield_forecast;
+  $("#pdYieldTitle").textContent = `Cereal-yield forecast for ${yf.forecast_year} (${yf.best})`;
+  $("#pdYieldSub").textContent = `Held-out test ${yf.split.replace("train < ", "").replace(", test >= ", " (train) / ")} onward: MAE ${yf.models[yf.best].mae.toFixed(3)} t/ha, R² ${yf.models[yf.best].r2.toFixed(3)}, vs persistence MAE ${yf.models["Persistence (last year)"].mae.toFixed(3)}. Points show the test years; the diagonal is a perfect forecast.`;
+  const T = D.yield_test; const best = yf.best; const traces = [];
+  for (const reg of REGIONS.filter(r => state.regions.has(r))) { const xs = [], ys = [], tx = []; for (let i = 0; i < T.year.length; i++) if (T.region[i] === reg && (!state.country || T.area[i] === areaByCode.get(+state.country).area)) { xs.push(T.target[i]); ys.push(T[best][i]); tx.push(`${T.area[i]} ${T.year[i]}`); }
+    if (xs.length) traces.push({type: "scatter", mode: "markers", name: reg, x: xs, y: ys, text: tx, marker: {color: regionColour(reg), size: 7, opacity: 0.7, line: {width: 1, color: css("--surface")}}, hovertemplate: "<b>%{text}</b><br>actual %{x:.2f} · predicted %{y:.2f} t/ha<extra></extra>"}); }
+  const mx = Math.max(...T.target); traces.push({type: "scatter", mode: "lines", x: [0, mx], y: [0, mx], line: {color: css("--text-2"), dash: "dot", width: 1.5}, showlegend: false, hoverinfo: "skip"});
+  plot("pdYieldChart", traces, base({xaxis: {title: {text: "Actual yield (t/ha)"}}, yaxis: {title: {text: "Predicted (t/ha)"}}}));
+  // table
+  let rows = D.forecasts.filter(r => state.regions.has(r.region) && (!state.country || r.area === areaByCode.get(+state.country).area));
+  const key = state.pdSort.replace("-", ""); rows.sort((a, b) => key === "area" ? a.area.localeCompare(b.area) : (state.pdSort.startsWith("-") ? a[key] - b[key] : b[key] - a[key]));
+  const ycol = Object.keys(rows[0] || {}).find(k => k.startsWith("yield_"));
+  $("#pdYieldTable").innerHTML = `<thead><tr><th>Country</th><th>Region</th><th class="num">${ycol ? ycol.replace("yield_", "").replace("_t_ha", "") : "latest"} (t/ha)</th><th class="num">${yf.forecast_year} forecast</th><th class="num">Change</th></tr></thead><tbody>` +
+    rows.slice(0, 200).map(r => `<tr><td>${r.area}</td><td class="muted">${r.region}</td><td class="num">${fmt(r[ycol], 2)}</td><td class="num">${fmt(r.forecast_t_ha, 2)}</td><td class="num" style="color:${r.change_pct >= 0 ? css("--good") : css("--critical")}">${r.change_pct >= 0 ? "+" : ""}${fmt(r.change_pct, 1)} %</td></tr>`).join("") + "</tbody>";
+  // risk
+  const rc = M.risk_classifier;
+  $("#pdRiskSub").textContent = `Probability that a country's undernourishment is ≥ 15 %, from structural features only (income, output per head, trade dependence, water/sanitation, climate). Best model ${rc.best}: ROC-AUC ${rc.models[rc.best].roc_auc.toFixed(3)} on ${rc.split.split(", ")[1]}. Observed PoU shown for reference.`;
+  const risk = D.risk.filter(r => state.regions.has(r.region) && r.risk_score >= state.pdThr && (!state.country || r.area === areaByCode.get(+state.country).area)).slice(0, 40);
+  plot("pdRisk", [{type: "bar", orientation: "h", y: risk.map(r => short(r.area)), x: risk.map(r => r.risk_score), customdata: risk.map(r => r.area), marker: {color: risk.map(r => regionColour(r.region))}, text: risk.map(r => r.observed_pou_pct != null ? `PoU ${fmt(r.observed_pou_pct, 1)} %` : "PoU n/a"), textposition: "outside", textfont: {color: css("--text-2"), size: 11}, cliponaxis: false,
+    hovertemplate: "<b>%{customdata}</b><br>risk score %{x:.2f}<br>%{text}<extra></extra>"}], base({height: Math.max(300, 24 * risk.length + 60), margin: {l: 160, r: 90, t: 6, b: 40}, yaxis: {autorange: "reversed", gridcolor: css("--surface")}, xaxis: {range: [0, 1.05], title: {text: "Risk score"}, showgrid: true, gridcolor: css("--grid")}, bargap: 0.3}));
+  // typology
+  const ty = M.typology; $("#pdTypoSub").textContent = `k-means with k = ${ty.k} (silhouette ${ty.silhouette_by_k[ty.k].toFixed(2)}) on ${ty.features.length} standardised indicators; PCA axes explain ${(100 * ty.explained_variance_pc1_pc2[0]).toFixed(0)} % + ${(100 * ty.explained_variance_pc1_pc2[1]).toFixed(0)} % of variance.`;
+  const tyRows = D.typology.filter(r => state.regions.has(r.region));
+  plot("pdTypo", ty.clusters.map((c, i) => { const rr = tyRows.filter(r => r.cluster === c.cluster); return {type: "scatter", mode: "markers", name: `${c.cluster}: ${c.name}`, x: rr.map(r => r.pc1), y: rr.map(r => r.pc2), text: rr.map(r => `${r.area} (${r.region})`), marker: {color: slot(i), size: rr.map(r => state.country && r.area === areaByCode.get(+state.country).area ? 16 : 9), opacity: 0.85, line: {width: 1.2, color: css("--surface")}}, hovertemplate: "<b>%{text}</b><extra></extra>"}; }),
+    base({xaxis: {title: {text: "PC1"}}, yaxis: {title: {text: "PC2"}}, legend: {orientation: "h", y: -0.2}}));
+  // projections
+  const hs = $("#pdHorizon"); if (!hs.options.length) { for (let y = 2026; y <= 2030; y++) hs.insertAdjacentHTML("beforeend", `<option>${y}</option>`); hs.value = state.pdHorizon; }
+  const H = state.pdHorizon; const ptr = [];
+  for (const reg of ["World"].concat(REGIONS.filter(r => state.regions.has(r)))) { const s = series(REGION_CODE[reg], "cereal_production_mt", 2005, D.meta.year_max); const pr = D.projections.filter(p => p.region === reg && p.year <= H); const c = regionColour(reg);
+    ptr.push({x: s.x, y: s.y, name: reg, mode: "lines", line: {color: c, width: 2}, legendgroup: reg, hovertemplate: `<b>${reg}</b> %{x}: %{y:,.0f} Mt<extra></extra>`});
+    ptr.push({x: pr.map(p => p.year).concat(pr.map(p => p.year).reverse()), y: pr.map(p => p.upper_mt).concat(pr.map(p => p.lower_mt).reverse()), fill: "toself", fillcolor: c, opacity: 0.12, line: {width: 0}, showlegend: false, legendgroup: reg, hoverinfo: "skip"});
+    ptr.push({x: pr.map(p => p.year), y: pr.map(p => p.projected_mt), mode: "lines", line: {color: c, width: 2, dash: "dot"}, showlegend: false, legendgroup: reg, hovertemplate: `<b>${reg}</b> %{x} projection: %{y:,.0f} Mt<extra></extra>`}); }
+  plot("pdProj", ptr, base({yaxis: {type: "log", title: {text: "Mt (log)"}}, hovermode: "x unified"}));
+  // metrics table
+  const pj = M.projections.regions;
+  $("#pdMetrics").innerHTML = `<table><thead><tr><th>Model</th><th>Task</th><th class="num">Test size</th><th>Key metrics</th></tr></thead><tbody>
+    <tr><td><b>${yf.best}</b><br><span class="muted small">vs persistence &amp; ${Object.keys(yf.models).filter(k => k !== yf.best && !k.startsWith("Persist")).join(", ")}</span></td><td>${yf.task}</td><td class="num">${fmtInt(yf.n_test)}</td><td>MAE ${yf.models[yf.best].mae.toFixed(3)} t/ha · RMSE ${yf.models[yf.best].rmse.toFixed(3)} · R² ${yf.models[yf.best].r2.toFixed(3)} · MAPE ${yf.models[yf.best].mape_pct.toFixed(1)} %<br><span class="muted small">top drivers: ${yf.top_features.slice(0, 4).map(t => t.feature).join(", ")}</span></td></tr>
+    <tr><td><b>${rc.best}</b><br><span class="muted small">vs ${Object.keys(rc.models).filter(k => k !== rc.best).join(", ")}</span></td><td>${rc.task}</td><td class="num">${fmtInt(rc.n_test)}</td><td>ROC-AUC ${rc.models[rc.best].roc_auc.toFixed(3)} · PR-AUC ${rc.models[rc.best].pr_auc.toFixed(3)} · F1 ${rc.models[rc.best].f1.toFixed(3)} · balanced acc. ${rc.models[rc.best].balanced_accuracy.toFixed(3)}<br><span class="muted small">confusion (tn/fp/fn/tp): ${Object.values(rc.models[rc.best].confusion).join(" / ")} · top drivers: ${rc.top_features.slice(0, 4).map(t => t.feature).join(", ")}</span></td></tr>
+    <tr><td><b>k-means (k = ${ty.k})</b></td><td>${ty.task}</td><td class="num">${ty.n_countries}</td><td>silhouette by k: ${Object.entries(ty.silhouette_by_k).map(([k, v]) => `${k}: ${v.toFixed(2)}`).join(", ")}</td></tr>
+    <tr><td><b>Log-linear trend</b></td><td>${M.projections.task}</td><td class="num">–</td><td>${Object.entries(pj).map(([r, v]) => `${r} ${v.trend_pct_per_year >= 0 ? "+" : ""}${v.trend_pct_per_year.toFixed(1)} %/yr → ${fmtInt(v.projected_2030_mt)} Mt`).join(" · ")}</td></tr></tbody></table>`;
+}
+
+// ---------------------------------------------------------------- insights
+function renderInsights() {
+  const q = ($("#insSearch").value || "").toLowerCase(); const box = $("#insights"); box.innerHTML = ""; let n = 0;
+  const themes = [...new Set(D.answers.map(a => a.theme))];
+  for (const t of themes) { const items = D.answers.filter(a => a.theme === t && (!q || (a.question + " " + a.findings.join(" ")).toLowerCase().includes(q))); if (!items.length) continue;
+    box.insertAdjacentHTML("beforeend", `<h3 style="margin:16px 0 8px">${t}</h3>`);
+    for (const a of items) { n++; box.insertAdjacentHTML("beforeend", `<details ${q ? "open" : ""}><summary><span>${a.qid}. ${a.question}</span><span class="theme">${a.findings.length} findings</span></summary><div class="body"><ul>${a.findings.map(f => `<li>${f}</li>`).join("")}</ul><a href="figures/${a.slug}.html" target="_blank" rel="noopener">Open interactive figure ↗</a> · <a href="https://github.com/chidex-coder/faostat-food-systems-analytics/blob/main/${a.sql_file}" target="_blank" rel="noopener">SQL</a></div></details>`); } }
+  $("#insCount").textContent = `${n} of ${D.answers.length} questions`;
+}
+
+// ---------------------------------------------------------------- data & governance
+function renderData() {
+  const rows = D.manifest;
+  $("#manifestTable").innerHTML = `<thead><tr><th>Domain</th><th>Archive</th><th>FAO release</th><th class="num">Raw rows</th><th class="num">Loaded</th><th class="num">Dropped (filter / missing / dupe)</th></tr></thead><tbody>` +
+    rows.map(r => `<tr><td><b>${r.domain}</b><br><span class="muted small">${r.name}</span></td><td class="small"><a href="${r.source_url}" title="${r.source_file}">${r.source_file.replace("_E_All_Data_(Normalized).zip", "")}</a><br><span class="muted">sha256 ${(r.sha256 || "").slice(0, 12)}…</span></td><td class="small">${(r.server_last_modified || "").replace(" GMT", "")}<br><span class="muted">catalogue ${(r.catalogue_date_update || "").slice(0, 10)}</span></td><td class="num">${fmtInt(r.rows_raw)}</td><td class="num">${fmtInt(r.rows_loaded)}</td><td class="num">${fmtInt(r.rows_dropped_filter)} / ${fmtInt(r.rows_dropped_missing)} / ${fmtInt(r.rows_dropped_dupe)}</td></tr>`).join("") + "</tbody>";
+  const groups = {A: "Official", E: "Estimated", I: "Imputed", X: "External source", F: "Forecast", P: "Provisional", B: "Time-series break"};
+  const doms = [...new Set(D.flags.map(f => f.domain))]; const tot = Object.fromEntries(doms.map(d => [d, D.flags.filter(f => f.domain === d).reduce((a, f) => a + f.n, 0)]));
+  const order = ["A", "X", "E", "I", "F", "P", "B"]; const cols = ["--s1", "--s3", "--s2", "--s4", "--s5", "--s7", "--s8"];
+  const tr = order.map((fl, i) => ({type: "bar", name: groups[fl], x: doms, y: doms.map(d => 100 * (D.flags.find(f => f.domain === d && f.flag === fl) || {n: 0}).n / tot[d]), marker: {color: css(cols[i])}, hovertemplate: `%{x} · ${groups[fl]}: %{y:.1f} %<extra></extra>`})).filter(t => t.y.some(v => v > 0));
+  plot("flagsPlot", tr, base({barmode: "stack", bargap: 0.35, yaxis: {title: {text: "% of loaded rows"}}}));
+  $("#dqTable").innerHTML = `<thead><tr><th>Check</th><th>Domain</th><th>Status</th><th class="num">Observed</th><th>Detail</th></tr></thead><tbody>` + D.dq.map(r => `<tr><td>${r.check_name}</td><td class="muted">${r.domain || "all"}</td><td><span class="badge ${r.status}">${r.status}</span></td><td class="num">${r.observed == null ? "–" : (/year/.test(r.check_name) ? String(r.observed) : Number.isInteger(r.observed) ? fmtInt(r.observed) : fmt(r.observed, 3))}</td><td class="small muted">${r.detail || ""}</td></tr>`).join("") + "</tbody>";
+}
+
+// ---------------------------------------------------------------- render
+function render() {
+  saveState();
+  ({overview: renderOverview, production: renderProduction, security: renderSecurity, inputs: renderInputs, explore: renderExplore, predict: renderPredict, insights: renderInsights, data: renderData})[state.tab]();
+  requestAnimationFrame(() => document.querySelectorAll("section[data-active='true'] .js-plotly-plot").forEach(el => Plotly.Plots.resize(el)));
+}
+function init() {
+  try { const t = localStorage.getItem("fse-theme"); if (t) document.documentElement.setAttribute("data-theme", t); } catch (e) {}
+  const ly = D.meta.latest_years;
+  $("#vintage").textContent = `${D.meta.n_countries} countries · ${fmtInt(D.meta.n_observations)} observations · ${D.meta.year_min}–${D.meta.year_max}.`;
+  $("#builtAt").textContent = D.meta.built_at.slice(0, 10);
+  buildFilters();
+  const keys = Object.keys(D.indicators);
+  fillSelect($("#ovIndicator"), keys, state.ovInd); $("#ovIndicator").onchange = (e) => { state.ovInd = e.target.value; render(); };
+  const cs = $("#cropSel"); for (const [k, v] of Object.entries(D.crops.items)) cs.insertAdjacentHTML("beforeend", `<option value="${k}">${v}</option>`); cs.value = state.crop; cs.onchange = (e) => { state.crop = e.target.value; render(); };
+  $("#cropMeasure").value = state.cropMeasure; $("#cropMeasure").onchange = (e) => { state.cropMeasure = e.target.value; render(); };
+  fillSelect($("#fsIndicator"), keys.filter(k => ind(k).group === "Food security" || k === "gdp_cap_ppp"), state.fsInd); $("#fsIndicator").onchange = (e) => { state.fsInd = e.target.value; render(); };
+  fillSelect($("#exX"), keys, state.exX); fillSelect($("#exY"), keys, state.exY); $("#exSize").value = state.exSize;
+  $("#exLogX").checked = state.exLogX; $("#exLogY").checked = state.exLogY; $("#exTrail").checked = state.exTrail;
+  $("#exX").onchange = (e) => { state.exX = e.target.value; render(); }; $("#exY").onchange = (e) => { state.exY = e.target.value; render(); }; $("#exSize").onchange = (e) => { state.exSize = e.target.value; render(); };
+  $("#exLogX").onchange = (e) => { state.exLogX = e.target.checked; render(); }; $("#exLogY").onchange = (e) => { state.exLogY = e.target.checked; render(); }; $("#exTrail").onchange = (e) => { state.exTrail = e.target.checked; render(); };
+  $("#pdSort").value = state.pdSort; $("#pdSort").onchange = (e) => { state.pdSort = e.target.value; render(); };
+  $("#pdRiskThr").value = state.pdThr; $("#pdRiskThr").onchange = (e) => { state.pdThr = +e.target.value; render(); };
+  $("#pdHorizon").onchange = (e) => { state.pdHorizon = +e.target.value; render(); };
+  $("#insSearch").oninput = () => renderInsights();
+  showTab(state.tab || "overview");
+  matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => { buildFilters(); render(); });
+}
+init();
+})();
+</script>
+</body>
+</html>

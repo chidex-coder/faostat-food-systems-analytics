@@ -1,0 +1,131 @@
+area,region,year,gdp_cap_ppp,pou_pct,population_m
+Armenia,Asia,2009,10143.0,3.1,2.945517
+Afghanistan,Asia,2023,1984.0,29.7,41.454761
+Albania,Europe,2024,21641.0,5.6,2.791765
+Algeria,Africa,2018,15343.0,2.6,42.505035
+Angola,Africa,2024,8902.0,17.4,37.885849
+Argentina,Americas,2024,26772.0,2.8,45.696159
+Barbados,Americas,2024,21838.0,5.0,0.282467
+Bangladesh,Asia,2024,8487.0,8.2,173.562364
+Bolivia (Plurinational State of),Americas,2024,11329.0,19.5,12.413315
+Botswana,Africa,2024,18069.0,18.2,2.521139
+Brazil,Americas,2023,19080.0,2.7,211.140729
+Belize,Americas,2024,12621.0,4.4,0.417072
+Solomon Islands,Oceania,2024,2353.0,27.0,0.819198
+Bulgaria,Europe,2020,28521.0,2.6,6.933652
+Myanmar,Asia,2024,5276.0,4.6,54.500091
+Cameroon,Africa,2024,4917.0,4.9,29.123744
+Cabo Verde,Africa,2024,9849.0,8.1,0.524877
+Central African Republic,Africa,2024,1111.0,29.8,5.33069
+Sri Lanka,Asia,2024,13753.0,4.9,23.103564
+Chad,Africa,2024,2413.0,33.6,20.299123
+Chile,Americas,2020,26249.0,2.6,19.370624
+Colombia,Americas,2024,18477.0,4.1,52.886363
+Comoros,Africa,2024,3483.0,16.5,0.866628
+Congo,Africa,2024,6181.0,25.0,6.332961
+Costa Rica,Americas,2012,19961.0,2.6,4.663934
+Cyprus,Asia,2007,43824.0,3.0,1.072714
+Azerbaijan,Asia,2006,13372.0,3.1,8.71138
+Benin,Africa,2024,3901.0,11.1,14.462724
+Dominica,Americas,2024,18739.0,3.0,0.066205
+Dominican Republic,Americas,2023,23282.0,2.8,11.331265
+Belarus,Europe,2007,20020.0,2.6,9.563133
+Ecuador,Americas,2024,13936.0,10.8,18.135478
+Egypt,Africa,2024,16798.0,8.4,116.538258
+El Salvador,Americas,2024,11669.0,5.3,6.338193
+Estonia,Europe,2004,27384.0,2.9,1.362676
+Fiji,Oceania,2024,13592.0,7.2,0.928784
+Djibouti,Africa,2024,6871.0,14.7,1.168722
+Georgia,Asia,2023,22591.0,2.7,3.807492
+Gabon,Africa,2024,18924.0,23.3,2.538952
+Gambia,Africa,2024,3058.0,17.5,2.759988
+Bosnia and Herzegovina,Europe,2003,8710.0,2.8,4.178523
+Ghana,Africa,2024,7056.0,6.4,34.427414
+Kiribati,Oceania,2024,3257.0,3.8,0.134518
+Guatemala,Americas,2024,12641.0,12.7,18.406359
+Guinea,Africa,2024,4016.0,8.7,14.754785
+Guyana,Americas,2020,19234.0,2.9,0.807481
+Haiti,Americas,2024,2810.0,51.4,11.772557
+Honduras,Americas,2024,6586.0,14.3,10.825703
+Hungary,Europe,2005,27766.0,2.5,10.065706
+Croatia,Europe,2006,29036.0,2.7,4.3158
+India,Asia,2024,9818.0,9.8,1450.935791
+Indonesia,Asia,2024,14470.0,6.3,283.487931
+Iran (Islamic Republic of),Asia,2024,17484.0,6.7,91.567738
+Iraq,Asia,2024,12725.0,13.4,46.042015
+Côte d'Ivoire,Africa,2024,6747.0,11.4,31.93423
+Kazakhstan,Asia,2020,32012.0,2.5,19.482117
+Jamaica,Americas,2024,11340.0,8.0,2.839175
+Jordan,Asia,2024,9520.0,12.2,11.552876
+Kyrgyzstan,Asia,2024,7049.0,4.8,7.186009
+Kenya,Africa,2024,5845.0,34.9,56.432944
+Cambodia,Asia,2024,7009.0,4.7,17.638801
+Republic of Korea,Asia,2004,31580.0,2.5,47.697075
+Latvia,Europe,2004,20574.0,2.5,2.264174
+Lao People's Democratic Republic,Asia,2024,8600.0,10.0,7.769819
+Lebanon,Asia,2023,11330.0,11.4,5.773493
+Liberia,Africa,2024,1646.0,37.3,5.612817
+Libya,Africa,2024,12584.0,18.7,7.381023
+Madagascar,Africa,2024,1657.0,41.8,31.964956
+Malawi,Africa,2024,1634.0,24.5,21.655286
+Malaysia,Asia,2020,29200.0,2.7,33.889558
+Mali,Africa,2024,2916.0,12.1,24.478595
+Mauritania,Africa,2024,6483.0,11.0,5.169395
+Mauritius,Africa,2024,28011.0,4.9,1.271169
+Mexico,Americas,2024,22040.0,3.1,130.861007
+Mongolia,Asia,2022,15310.0,2.5,3.386015
+Morocco,Africa,2024,9163.0,6.5,38.081173
+Mozambique,Africa,2024,1500.0,22.3,34.631766
+Republic of Moldova,Europe,2016,12377.0,2.7,3.237794
+Namibia,Africa,2024,10281.0,20.1,3.030131
+Nepal,Asia,2024,5047.0,5.2,29.651054
+North Macedonia,Europe,2012,17190.0,2.6,2.027289
+Vanuatu,Oceania,2024,3172.0,5.8,0.327777
+Nicaragua,Americas,2022,7278.0,17.3,6.730654
+Niger,Africa,2024,1803.0,12.9,27.032412
+Nigeria,Africa,2024,7994.0,22.2,232.679478
+Pakistan,Asia,2024,5500.0,16.1,251.269164
+Panama,Americas,2024,36395.0,4.7,4.515577
+Papua New Guinea,Oceania,2024,4289.0,30.5,10.576502
+Paraguay,Americas,2024,16296.0,4.1,6.929153
+Peru,Americas,2024,15662.0,5.7,34.217848
+Philippines,Asia,2024,10376.0,3.4,115.843669
+Guinea-Bissau,Africa,2024,2744.0,20.0,2.201352
+Timor-Leste,Asia,2024,3891.0,16.9,1.400638
+Zimbabwe,Africa,2024,5215.0,18.4,16.634373
+Rwanda,Africa,2024,3265.0,22.6,14.256567
+Russian Federation,Europe,2003,24058.0,2.7,145.794229
+Saint Vincent and the Grenadines,Americas,2024,18714.0,4.0,0.100616
+Sao Tome and Principe,Africa,2024,5491.0,23.0,0.235536
+Saudi Arabia,Asia,2014,58872.0,2.7,28.998128
+Senegal,Africa,2024,4461.0,5.3,18.501984
+Seychelles,Africa,2019,34346.0,2.7,0.11765
+Sierra Leone,Africa,2024,3099.0,25.3,8.642022
+Somalia,Africa,2024,1409.0,56.5,19.009151
+South Africa,Africa,2024,13598.0,11.2,64.007187
+Suriname,Americas,2024,19179.0,12.7,0.634431
+Tajikistan,Asia,2024,4756.0,8.0,10.590927
+Eswatini,Africa,2024,10380.0,15.1,1.242822
+Syrian Arab Republic,Asia,2022,4455.0,35.5,22.462173
+Turkmenistan,Asia,2024,18662.0,4.1,7.494498
+United Republic of Tanzania,Africa,2024,3713.0,19.1,68.560157
+Thailand,Asia,2024,21741.0,5.4,71.668011
+Togo,Africa,2024,2961.0,10.2,8.406558
+Trinidad and Tobago,Americas,2024,31960.0,10.4,1.507782
+Oman,Asia,2024,36721.0,7.1,5.281538
+Tunisia,Africa,2024,12775.0,2.8,12.277109
+Türkiye,Asia,2009,18612.0,3.1,72.464848
+United Arab Emirates,Asia,2020,66809.0,2.5,9.448524
+Uganda,Africa,2024,2880.0,20.9,50.015092
+Ukraine,Europe,2024,16320.0,10.8,37.860221
+Burkina Faso,Africa,2024,2548.0,11.7,23.548781
+Uruguay,Americas,2004,17519.0,2.6,3.283148
+Uzbekistan,Asia,2011,6100.0,2.6,28.823196
+Viet Nam,Asia,2024,14415.0,6.1,100.987687
+Ethiopia,Africa,2024,2892.0,19.9,132.059767
+Samoa,Oceania,2024,7686.0,3.4,0.218019
+Democratic Republic of the Congo,Africa,2024,1602.0,39.5,109.276265
+Zambia,Africa,2024,3708.0,41.0,21.314956
+Serbia,Europe,2004,14194.0,3.0,
+Montenegro,Europe,2006,17727.0,3.0,0.633871
+Sudan,Africa,2021,3249.0,10.9,48.066924

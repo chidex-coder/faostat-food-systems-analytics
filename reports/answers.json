@@ -1,0 +1,568 @@
+[
+  {
+    "qid": "Q01",
+    "slug": "q01_global_cereal_production",
+    "question": "How has world cereal production, harvested area and yield evolved since 1961?",
+    "theme": "Production",
+    "findings": [
+      "World cereal production rose from 877 Mt in 1961 to 3,133 Mt in 2024 (3.6x, 2.0 % a year).",
+      "Harvested area grew only 15 % (648 -> 745 Mha); yield rose 211 % (1.35 -> 4.21 t/ha), so intensification, not expansion, fed the growth."
+    ],
+    "figure_file": "figures/q01_global_cereal_production.html",
+    "table_file": "tables/q01_global_cereal_production.csv",
+    "sql_file": "sql/questions/q01_global_cereal_production.sql",
+    "numbers": {
+      "production_mt_latest": 3133.2,
+      "latest_year": 2024,
+      "yield_t_ha_latest": 4.21
+    }
+  },
+  {
+    "qid": "Q02",
+    "slug": "q02_top_cereal_producers",
+    "question": "Which countries produce the most cereals today and what share of the world total is that?",
+    "theme": "Production",
+    "findings": [
+      "China, mainland, United States of America, India produce 48 % of world cereals (1,497 Mt of the top-15 total 2,345 Mt).",
+      "The 15 largest producers account for 75 % of global output; Asia contributes the most entries in the list."
+    ],
+    "figure_file": "figures/q02_top_cereal_producers.html",
+    "table_file": "tables/q02_top_cereal_producers.csv",
+    "sql_file": "sql/questions/q02_top_cereal_producers.sql",
+    "numbers": {
+      "top_producer": "China, mainland",
+      "top_share_pct": 20.8
+    }
+  },
+  {
+    "qid": "Q03",
+    "slug": "q03_staple_yields_by_region",
+    "question": "How do wheat, maize and rice yields compare across continents and how fast are they rising?",
+    "theme": "Production",
+    "findings": [
+      "Wheat: Europe leads at 4.2 t/ha while Oceania trails at 2.6 t/ha - a 1.6x gap in 2024.",
+      "Maize (corn): Americas leads at 7.9 t/ha while Africa trails at 2.1 t/ha - a 3.8x gap in 2024.",
+      "Rice: Oceania leads at 11.1 t/ha while Africa trails at 2.4 t/ha - a 4.7x gap in 2024.",
+      "Since 1961 maize yields multiplied 5.1x in Asia but only 2.0x in Africa."
+    ],
+    "figure_file": "figures/q03_staple_yields_by_region.html",
+    "table_file": "tables/q03_staple_yields_by_region.csv",
+    "sql_file": "sql/questions/q03_staple_yields_by_region.sql",
+    "numbers": {}
+  },
+  {
+    "qid": "Q04",
+    "slug": "q04_maize_yield_gap",
+    "question": "Where is the maize yield gap largest? (2022-2024 average vs the top-decile yield)",
+    "theme": "Production",
+    "findings": [
+      "The top-decile maize yield among countries harvesting >= 100 kha is 9.1 t/ha; the median country reaches 3.5 t/ha.",
+      "Closing the gap in just China, mainland, Brazil, India would add 252 Mt - the 20 largest gaps together represent 586 Mt of latent production.",
+      "By region the median yield is Africa 1.7 t/ha, Americas 4.0 t/ha, Asia 5.5 t/ha, Europe 7.0 t/ha."
+    ],
+    "figure_file": "figures/q04_maize_yield_gap.html",
+    "table_file": "tables/q04_maize_yield_gap.csv",
+    "sql_file": "sql/questions/q04_maize_yield_gap.sql",
+    "numbers": {
+      "p90_yield": 9.1
+    }
+  },
+  {
+    "qid": "Q05",
+    "slug": "q05_growth_decomposition",
+    "question": "Since 2000, how much of each region's cereal production growth came from yield versus area?",
+    "theme": "Production",
+    "findings": [
+      "Europe: production +24 %, of which yield explains 152 % and area -53 %.",
+      "Oceania: production +52 %, of which yield explains 75 % and area 25 %.",
+      "World: production +52 %, of which yield explains 76 % and area 24 %.",
+      "Americas: production +54 %, of which yield explains 82 % and area 18 %.",
+      "Asia: production +57 %, of which yield explains 82 % and area 18 %.",
+      "Africa: production +100 %, of which yield explains 40 % and area 60 %."
+    ],
+    "figure_file": "figures/q05_growth_decomposition.html",
+    "table_file": "tables/q05_growth_decomposition.csv",
+    "sql_file": "sql/questions/q05_growth_decomposition.sql",
+    "numbers": {}
+  },
+  {
+    "qid": "Q06",
+    "slug": "q06_global_meat_production",
+    "question": "How has world meat production shifted between poultry, pig, bovine and sheep/goat meat?",
+    "theme": "Production",
+    "findings": [
+      "Total meat output grew from 68 Mt (1961) to 368 Mt (2024).",
+      "Poultry's share rose from 13 % to 40 %; it overtook pig meat in 2016.",
+      "Bovine meat's share fell from 42 % to 21 %."
+    ],
+    "figure_file": "figures/q06_global_meat_production.html",
+    "table_file": "tables/q06_global_meat_production.csv",
+    "sql_file": "sql/questions/q06_global_meat_production.sql",
+    "numbers": {
+      "meat_mt_latest": 367.8
+    }
+  },
+  {
+    "qid": "Q07",
+    "slug": "q07_production_volatility",
+    "question": "Which sizeable cereal producers have the most volatile output (2010-2024)?",
+    "theme": "Production",
+    "findings": [
+      "Morocco has the most volatile cereal output (39 % of its 7.0 Mt mean), followed by Syrian Arab Republic and Iraq.",
+      "8 of the 20 most volatile producers are African; the median de-trended CV across all 107 producers is 9.9 %."
+    ],
+    "figure_file": "figures/q07_production_volatility.html",
+    "table_file": "tables/q07_production_volatility.csv",
+    "sql_file": "sql/questions/q07_production_volatility.sql",
+    "numbers": {}
+  },
+  {
+    "qid": "Q08",
+    "slug": "q08_pou_by_region",
+    "question": "How has the prevalence of undernourishment moved in each region since 2000?",
+    "theme": "Food security",
+    "findings": [
+      "World undernourishment fell from 13.0 % (2001) to a low of 7.3 % in 2018, then rose to 8.1 % in 2024 - 663 million people.",
+      "Latest regional rates: Africa 20.1 %, Oceania 8.2 %, Asia 6.5 %.",
+      "Africa is the only region above 15 %: 20.1 % in 2024, up from its 15.7 % low in 2013."
+    ],
+    "figure_file": "figures/q08_pou_by_region.html",
+    "table_file": "tables/q08_pou_by_region.csv",
+    "sql_file": "sql/questions/q08_pou_by_region.sql",
+    "numbers": {
+      "world_pou_latest": 8.1,
+      "world_undernourished_m": 663.0
+    }
+  },
+  {
+    "qid": "Q09",
+    "slug": "q09_pou_change_countries",
+    "question": "Which countries have the highest undernourishment now, and where has it changed most since 2010?",
+    "theme": "Food security",
+    "findings": [
+      "Somalia (56 %), Haiti (51 %) and Madagascar (42 %) have the highest undernourishment in 2024.",
+      "Biggest improvement since 2010: Tajikistan (-16 pp to 8 %). Biggest deterioration: Syrian Arab Republic (+35 pp to 41 %).",
+      "53 of 97 countries improved; 17 worsened by more than 5 pp."
+    ],
+    "figure_file": "figures/q09_pou_change_countries.html",
+    "table_file": "tables/q09_pou_change_countries.csv",
+    "sql_file": "sql/questions/q09_pou_change_countries.sql",
+    "numbers": {
+      "latest_year": 2024
+    }
+  },
+  {
+    "qid": "Q10",
+    "slug": "q10_fies_gender_gap",
+    "question": "How large is the gender gap in moderate-or-severe food insecurity, by region?",
+    "theme": "Food security",
+    "findings": [
+      "Globally 24.7 % of women vs 23.5 % of men were moderately or severely food insecure in 2024 - a gap of +1.2 pp.",
+      "Largest gaps: Africa +1.2 pp, Europe +0.7 pp, Asia +0.7 pp.",
+      "The world gap peaked at +2.6 pp in 2021 (pandemic years)."
+    ],
+    "figure_file": "figures/q10_fies_gender_gap.html",
+    "table_file": "tables/q10_fies_gender_gap.csv",
+    "sql_file": "sql/questions/q10_fies_gender_gap.sql",
+    "numbers": {}
+  },
+  {
+    "qid": "Q11",
+    "slug": "q11_income_vs_pou",
+    "question": "How strongly is national income associated with undernourishment?",
+    "theme": "Food security",
+    "findings": [
+      "Across 130 countries the log-log correlation between income and undernourishment is r = -0.73; each doubling of income is associated with a 39 % lower PoU.",
+      "Countries above Int$ 30,000 per head have a maximum PoU of 10.4 % (2.5 % is FAO's reporting floor); below Int$ 3,000 the median PoU is 26 %.",
+      "Worst performers for their income level: Trinidad and Tobago, Botswana, Gabon; best: Kiribati, Uzbekistan, Bosnia and Herzegovina."
+    ],
+    "figure_file": "figures/q11_income_vs_pou.html",
+    "table_file": "tables/q11_income_vs_pou.csv",
+    "sql_file": "sql/questions/q11_income_vs_pou.sql",
+    "numbers": {
+      "r_income_pou": -0.73
+    }
+  },
+  {
+    "qid": "Q12",
+    "slug": "q12_stunting_vs_supply",
+    "question": "Does dietary energy supply adequacy explain child stunting?",
+    "theme": "Food security",
+    "findings": [
+      "Energy adequacy alone explains stunting only moderately (r = -0.57, n = 136); 14 countries with >= 120 % adequacy still have stunting above 20 %.",
+      "Basic sanitation coverage correlates more strongly with stunting (r = -0.73) - calories are necessary but not sufficient.",
+      "Highest stunting: Niger 48 %, Angola 48 %, Papua New Guinea 48 %."
+    ],
+    "figure_file": "figures/q12_stunting_vs_supply.html",
+    "table_file": "tables/q12_stunting_vs_supply.csv",
+    "sql_file": "sql/questions/q12_stunting_vs_supply.sql",
+    "numbers": {
+      "r_adequacy_stunting": -0.57,
+      "r_sanitation_stunting": -0.73
+    }
+  },
+  {
+    "qid": "Q13",
+    "slug": "q13_obesity_trends",
+    "question": "How is adult obesity trending by region, and how does it relate to income?",
+    "theme": "Food security",
+    "findings": [
+      "World adult obesity rose from 8.7 % in 2000 to 16.2 % in 2024 - it has never fallen in a single year.",
+      "Latest: Oceania 31.2 %, Europe 19.6 %, Africa 16.6 %, Asia 11.2 %.",
+      "Fastest-rising region: Oceania."
+    ],
+    "figure_file": "figures/q13_obesity_trends.html",
+    "table_file": "tables/q13_obesity_trends.csv",
+    "sql_file": "sql/questions/q13_obesity_trends.sql",
+    "numbers": {
+      "world_obesity_latest": 16.2
+    }
+  },
+  {
+    "qid": "Q14",
+    "slug": "q14_cereal_import_dependency",
+    "question": "Which countries depend most on imported cereals?",
+    "theme": "Food security",
+    "findings": [
+      "20 countries import essentially all (>= 99 %) of the cereals they consume, led by Djibouti, China, Hong Kong SAR, Jordan.",
+      "81 countries import at least half their cereals; 34 are net exporters (negative ratio).",
+      "Regionally the median dependency is Oceania 96 %, Americas 58 %, Asia 48 %, Africa 43 %, Europe 20 %."
+    ],
+    "figure_file": "figures/q14_cereal_import_dependency.html",
+    "table_file": "tables/q14_cereal_import_dependency.csv",
+    "sql_file": "sql/questions/q14_cereal_import_dependency.sql",
+    "numbers": {}
+  },
+  {
+    "qid": "Q15",
+    "slug": "q15_healthy_diet_affordability",
+    "question": "What does a healthy diet cost and who cannot afford it?",
+    "theme": "Food security",
+    "findings": [
+      "A healthy diet cost 4.28 PPP$ per person per day in 2025, up from 2.94 in 2017.",
+      "32.7 % of the world's people (2,692 million) could not afford it in 2025, down from 41.0 % in 2017.",
+      "Worst affected: South Sudan 94 %, Malawi 93 %, Mozambique 91 %."
+    ],
+    "figure_file": "figures/q15_healthy_diet_affordability.html",
+    "table_file": "tables/q15_healthy_diet_affordability.csv",
+    "sql_file": "sql/questions/q15_healthy_diet_affordability.sql",
+    "numbers": {
+      "world_unaffordable_pct": 32.7,
+      "world_unaffordable_m": 2692.0
+    }
+  },
+  {
+    "qid": "Q16",
+    "slug": "q16_nitrogen_by_region",
+    "question": "How has nitrogen fertilizer use per hectare of cropland evolved by region?",
+    "theme": "Inputs & land",
+    "findings": [
+      "World nitrogen use is 71 kg N/ha of cropland (115 Mt N in 2024), 8.3x the 1961 level.",
+      "Latest intensity: Asia 112, Oceania 93, Americas 71, Europe 50, Africa 15 kg N/ha.",
+      "Africa applies 7x less nitrogen per hectare than Asia."
+    ],
+    "figure_file": "figures/q16_nitrogen_by_region.html",
+    "table_file": "tables/q16_nitrogen_by_region.csv",
+    "sql_file": "sql/questions/q16_nitrogen_by_region.sql",
+    "numbers": {
+      "world_n_kg_ha": 71.3
+    }
+  },
+  {
+    "qid": "Q17",
+    "slug": "q17_fertilizer_vs_yield",
+    "question": "How does nitrogen intensity relate to cereal yield across countries?",
+    "theme": "Inputs & land",
+    "findings": [
+      "Across 138 countries yield scales with nitrogen intensity at r = 0.69; a doubling of N/ha is associated with 24 % higher cereal yields.",
+      "Diminishing returns are visible: countries above 150 kg N/ha average 5.6 t/ha vs 4.7 t/ha for 50-150 kg.",
+      "Most nitrogen-efficient large producers (>= 1 Mha cereals, yield furthest above the fit): South Sudan, United States of America, Democratic People's Republic of Korea."
+    ],
+    "figure_file": "figures/q17_fertilizer_vs_yield.html",
+    "table_file": "tables/q17_fertilizer_vs_yield.csv",
+    "sql_file": "sql/questions/q17_fertilizer_vs_yield.sql",
+    "numbers": {
+      "r_n_yield": 0.69
+    }
+  },
+  {
+    "qid": "Q18",
+    "slug": "q18_land_use_by_region",
+    "question": "How is land used in each region, and how has cropland / pasture / forest changed since 1990?",
+    "theme": "Inputs & land",
+    "findings": [
+      "Cropland covers 12 % of the world's land, pastures 24 % and forest 32 %.",
+      "Since 1990 forest area fell 193 Mha globally (-4.5 %); Africa -14.3 %, Americas -9.2 %, Europe +2.5 %, Asia +10.5 %.",
+      "Cropland expanded most in Africa (+52 %) and contracted in Europe (-22 %)."
+    ],
+    "figure_file": "figures/q18_land_use_by_region.html",
+    "table_file": "tables/q18_land_use_by_region.csv",
+    "sql_file": "sql/questions/q18_land_use_by_region.sql",
+    "numbers": {}
+  },
+  {
+    "qid": "Q19",
+    "slug": "q19_irrigation_vs_yield",
+    "question": "Is a higher share of irrigated arable land associated with higher cereal yields?",
+    "theme": "Inputs & land",
+    "findings": [
+      "Irrigation share and cereal yield correlate at r = 0.39 across 141 countries; each additional 10 pp of irrigated arable land is associated with +0.28 t/ha.",
+      "Countries with under 5 % irrigated arable land average 2.5 t/ha; those above 40 % average 4.6 t/ha.",
+      "Rain-fed high performers (< 10 % irrigated, > 6 t/ha): Germany, Croatia, Slovenia, United Kingdom of Great Britain and Northern Ireland, Belgium.",
+      "Data note: FAOSTAT's food-security indicator 21034 reports Egypt at 4 % 'of arable land', i.e. it is effectively expressed against total land area; the ratio here is rebuilt from the land-use domain (RL 6690 / (6621 + 6650))."
+    ],
+    "figure_file": "figures/q19_irrigation_vs_yield.html",
+    "table_file": "tables/q19_irrigation_vs_yield.csv",
+    "sql_file": "sql/questions/q19_irrigation_vs_yield.sql",
+    "numbers": {
+      "r_irrigation_yield": 0.39
+    }
+  },
+  {
+    "qid": "Q20",
+    "slug": "q20_organic_agriculture",
+    "question": "How fast is organically farmed agricultural area growing?",
+    "theme": "Inputs & land",
+    "findings": [
+      "Organic farming covers 99 Mha worldwide (2.13 % of agricultural land) in 2024, 4.5x the 2004 area.",
+      "Regional shares: Oceania 14.16 %, Europe 4.26 %, Americas 1.33 %, Asia 0.59 %, Africa 0.24 %."
+    ],
+    "figure_file": "figures/q20_organic_agriculture.html",
+    "table_file": "tables/q20_organic_agriculture.csv",
+    "sql_file": "sql/questions/q20_organic_agriculture.sql",
+    "numbers": {}
+  },
+  {
+    "qid": "Q21",
+    "slug": "q21_temperature_by_region",
+    "question": "How much has land surface temperature changed in each region (vs the 1951-1980 baseline)?",
+    "theme": "Climate & emissions",
+    "findings": [
+      "World land temperature in the last five years averaged +1.72 \u00b0C above the 1951-1980 baseline; the single warmest year was 2024 at +2.11 \u00b0C.",
+      "Five-year mean by region: Europe +2.27 \u00b0C, Asia +1.80 \u00b0C, Americas +1.75 \u00b0C, Africa +1.37 \u00b0C, Oceania +1.03 \u00b0C.",
+      "Europe has warmed fastest; Oceania least. The 1960s world average was -0.02 \u00b0C."
+    ],
+    "figure_file": "figures/q21_temperature_by_region.html",
+    "table_file": "tables/q21_temperature_by_region.csv",
+    "sql_file": "sql/questions/q21_temperature_by_region.sql",
+    "numbers": {
+      "world_temp_change_5yr": 1.72
+    }
+  },
+  {
+    "qid": "Q22",
+    "slug": "q22_agrifood_emissions_by_region",
+    "question": "How large are agrifood-system emissions by region, and what share of all emissions are they?",
+    "theme": "Climate & emissions",
+    "findings": [
+      "Global agrifood systems emitted 16.5 Gt CO2eq in 2023 - 32 % of all anthropogenic emissions - split into farm gate 8.1 Gt, land-use change 3.2 Gt and pre/post-production 5.2 Gt.",
+      "Since 1990 agrifood emissions rose 12 % while their share of the total fell from 43 % to 32 % as energy emissions grew faster.",
+      "Latest by region: Asia 7.10 Gt, Americas 4.82 Gt, Africa 2.38 Gt, Europe 1.87 Gt, Oceania 0.37 Gt."
+    ],
+    "figure_file": "figures/q22_agrifood_emissions_by_region.html",
+    "table_file": "tables/q22_agrifood_emissions_by_region.csv",
+    "sql_file": "sql/questions/q22_agrifood_emissions_by_region.sql",
+    "numbers": {
+      "world_agrifood_gt": 16.54,
+      "world_agrifood_share": 31.7
+    }
+  },
+  {
+    "qid": "Q23",
+    "slug": "q23_emissions_per_capita",
+    "question": "Which countries have the highest agrifood emissions per person, and how does that relate to income?",
+    "theme": "Climate & emissions",
+    "findings": [
+      "Mongolia (17.5 t), Trinidad and Tobago (14.0 t) and Central African Republic (11.0 t) have the highest agrifood emissions per person - land-use change and cattle dominate.",
+      "The population-weighted world average is 2.04 t per person; the median country is 1.92 t.",
+      "Per-capita agrifood emissions are only weakly tied to income (log-log r = 0.31) - unlike energy emissions, they follow land and livestock."
+    ],
+    "figure_file": "figures/q23_emissions_per_capita.html",
+    "table_file": "tables/q23_emissions_per_capita.csv",
+    "sql_file": "sql/questions/q23_emissions_per_capita.sql",
+    "numbers": {
+      "r_income_agrifood": 0.31
+    }
+  },
+  {
+    "qid": "Q24",
+    "slug": "q24_temperature_vs_wheat_yield",
+    "question": "Do hotter-than-usual years coincide with below-trend wheat yields?",
+    "theme": "Climate & emissions",
+    "findings": [
+      "In 68 % of the 53 major wheat producers, hotter-than-usual years coincide with below-trend yields (negative r); the median correlation is -0.09.",
+      "Most heat-sensitive: Mongolia (r = -0.36), Republic of Moldova (r = -0.35), Italy (r = -0.30).",
+      "Heat-tolerant or cold-limited systems where warm years help: Kyrgyzstan (r = +0.26), Turkmenistan (r = +0.28), Sweden (r = +0.35)."
+    ],
+    "figure_file": "figures/q24_temperature_vs_wheat_yield.html",
+    "table_file": "tables/q24_temperature_vs_wheat_yield.csv",
+    "sql_file": "sql/questions/q24_temperature_vs_wheat_yield.sql",
+    "numbers": {
+      "share_negative_r": 67.9
+    }
+  },
+  {
+    "qid": "Q25",
+    "slug": "q25_farm_gate_composition",
+    "question": "What makes up farm-gate emissions globally and how has the mix changed?",
+    "theme": "Climate & emissions",
+    "findings": [
+      "Farm-gate emissions reached 8.10 Gt CO2eq in 2023: enteric fermentation 36 %, manure 5 %, synthetic fertilizers 8 %, rice 9 %.",
+      "Synthetic-fertilizer emissions grew fastest since 1990 (1.4x) versus 1.2x for enteric fermentation."
+    ],
+    "figure_file": "figures/q25_farm_gate_composition.html",
+    "table_file": "tables/q25_farm_gate_composition.csv",
+    "sql_file": "sql/questions/q25_farm_gate_composition.sql",
+    "numbers": {}
+  },
+  {
+    "qid": "Q26",
+    "slug": "q26_per_capita_cereal",
+    "question": "Is cereal production keeping up with population? Per-capita output by region.",
+    "theme": "People & prices",
+    "findings": [
+      "World cereal output per person rose from 286 kg in 1961 to 384 kg in 2024 even as population grew from 3.1 to 8.2 billion.",
+      "Latest by region: Oceania 1161 kg, Americas 779 kg, Europe 639 kg, Asia 325 kg, Africa 147 kg.",
+      "Africa's per-capita output (147 kg) is 5.3x below the Americas'."
+    ],
+    "figure_file": "figures/q26_per_capita_cereal.html",
+    "table_file": "tables/q26_per_capita_cereal.csv",
+    "sql_file": "sql/questions/q26_per_capita_cereal.sql",
+    "numbers": {
+      "world_kg_per_capita": 384.0
+    }
+  },
+  {
+    "qid": "Q27",
+    "slug": "q27_urbanisation_and_land",
+    "question": "How is urbanisation changing, and how much agricultural land is left per person?",
+    "theme": "People & prices",
+    "findings": [
+      "The urban share of the world population rose from 34 % (1961) to 58 % (2024).",
+      "Agricultural land per person fell from 1.47 ha to 0.57 ha over the same period (-61 %)."
+    ],
+    "figure_file": "figures/q27_urbanisation_and_land.html",
+    "table_file": "tables/q27_urbanisation_and_land.csv",
+    "sql_file": "sql/questions/q27_urbanisation_and_land.sql",
+    "numbers": {}
+  },
+  {
+    "qid": "Q28",
+    "slug": "q28_staple_price_trends",
+    "question": "How have producer prices for wheat, maize and rice moved across countries since 1991?",
+    "theme": "People & prices",
+    "findings": [
+      "Maize (corn): median producer price 289 USD/t in 2024, peak 342 USD/t in 2022; +17 % vs 2019.",
+      "Rice: median producer price 458 USD/t in 2024, peak 500 USD/t in 2023; +24 % vs 2019.",
+      "Wheat: median producer price 244 USD/t in 2024, peak 341 USD/t in 2022; +14 % vs 2019."
+    ],
+    "figure_file": "figures/q28_staple_price_trends.html",
+    "table_file": "tables/q28_staple_price_trends.csv",
+    "sql_file": "sql/questions/q28_staple_price_trends.sql",
+    "numbers": {}
+  },
+  {
+    "qid": "Q29",
+    "slug": "q29_price_dispersion",
+    "question": "How dispersed are producer prices for staples across countries in the latest year?",
+    "theme": "People & prices",
+    "findings": [
+      "The 90th/10th percentile price ratio across countries is widest for Maize (5.1x) and narrowest for Cow milk (1.8x).",
+      "Median prices: Wheat 244, Maize 289, Rice 458, Soya beans 487, Potatoes 506, Cow milk 529, Hen eggs 2,194 USD/t."
+    ],
+    "figure_file": "figures/q29_price_dispersion.html",
+    "table_file": "tables/q29_price_dispersion.csv",
+    "sql_file": "sql/questions/q29_price_dispersion.sql",
+    "numbers": {}
+  },
+  {
+    "qid": "Q30",
+    "slug": "q30_production_vs_population_growth",
+    "question": "Where has cereal production growth lagged population growth since 2010?",
+    "theme": "People & prices",
+    "findings": [
+      "In 68 of 136 countries cereal output grew slower than population between 2010 and 2024 (points below the diagonal).",
+      "Largest shortfalls: Somalia (-119 pp), Yemen (-110 pp), Gambia (-109 pp), Zambia (-96 pp), Namibia (-92 pp).",
+      "41 African countries are in the sample; 23 of them fell behind population growth."
+    ],
+    "figure_file": "figures/q30_production_vs_population_growth.html",
+    "table_file": "tables/q30_production_vs_population_growth.csv",
+    "sql_file": "sql/questions/q30_production_vs_population_growth.sql",
+    "numbers": {
+      "countries_lagging": 68
+    }
+  },
+  {
+    "qid": "Q31",
+    "slug": "q31_food_system_scorecard",
+    "question": "A composite food-system scorecard: which countries combine adequate supply, low insecurity and low emissions intensity?",
+    "theme": "Composite & governance",
+    "findings": [
+      "Composite score across 8 indicators (n = 133 countries with >= 6): strongest Republic of Korea, Bulgaria, Serbia; weakest Democratic Republic of the Congo, Somalia, Central African Republic.",
+      "Median score by region: Europe +0.53, Asia +0.20, Americas +0.05, Africa -0.28, Oceania -0.35.",
+      "Least-developed countries score -0.31 on median versus +0.16 for the rest."
+    ],
+    "figure_file": "figures/q31_food_system_scorecard.html",
+    "table_file": "tables/q31_food_system_scorecard.csv",
+    "sql_file": "sql/questions/q31_food_system_scorecard.sql",
+    "numbers": {}
+  },
+  {
+    "qid": "Q32",
+    "slug": "q32_data_provenance",
+    "question": "How much of each domain is official data versus estimated, imputed or externally sourced?",
+    "theme": "Composite & governance",
+    "findings": [
+      "Across all 7,333,827 loaded observations, 31 % carry the official flag, 57 % are FAO estimates, 7 % imputed and 4 % come from external organisations (UN population, WHO, World Bank).",
+      "Only the production domain (QCL) is majority official (45 %); temperature, emissions and healthy-diet indicators are 100 % modelled estimates by construction.",
+      "Analyses that lean on FS, RL and RFN should be read as FAO's best estimate rather than reported statistics."
+    ],
+    "figure_file": "figures/q32_data_provenance.html",
+    "table_file": "tables/q32_data_provenance.csv",
+    "sql_file": "sql/questions/q32_data_provenance.sql",
+    "numbers": {}
+  },
+  {
+    "qid": "Q33",
+    "slug": "q33_vulnerable_groups",
+    "question": "How do least-developed, land-locked and small-island states compare with everyone else?",
+    "theme": "Composite & governance",
+    "findings": [
+      "Least-developed countries (n = 39) have median undernourishment of 18 % vs 5 % elsewhere, and 66 % cannot afford a healthy diet.",
+      "Median cereal import dependency: Small island 93 %, Other 46 %, Land-locked developing 34 %, Least developed 25 % (n: LDC 39, LLDC 15, SIDS 20).",
+      "Cereal yields: LDC median 1.6 t/ha vs 3.7 t/ha for other countries."
+    ],
+    "figure_file": "figures/q33_vulnerable_groups.html",
+    "table_file": "tables/q33_vulnerable_groups.csv",
+    "sql_file": "sql/questions/q33_vulnerable_groups.sql",
+    "numbers": {}
+  },
+  {
+    "qid": "Q34",
+    "slug": "q34_fastest_growing_commodities",
+    "question": "Which commodities have grown fastest in world production since 2000?",
+    "theme": "Production",
+    "findings": [
+      "Fastest growth: Mushrooms and truffles (+488 %), Oil palm fruit (+247 %), Spinach (+222 %).",
+      "Largest absolute additions: Sugar cane +687 Mt, Maize (corn) +626 Mt, Raw milk of cattle +308 Mt, Oil palm fruit +298 Mt, Soya beans +236 Mt."
+    ],
+    "figure_file": "figures/q34_fastest_growing_commodities.html",
+    "table_file": "tables/q34_fastest_growing_commodities.csv",
+    "sql_file": "sql/questions/q34_fastest_growing_commodities.sql",
+    "numbers": {}
+  },
+  {
+    "qid": "Q35",
+    "slug": "q35_livestock_stocks",
+    "question": "How have global livestock herds (cattle, pigs, sheep, goats, chickens) changed since 1961?",
+    "theme": "Production",
+    "findings": [
+      "Head counts in 2024: Chickens 27,681 M, Cattle 1,579 M, Sheep 1,363 M, Goats 1,188 M, Swine / pigs 962 M.",
+      "Chickens grew 7.1x since 1961, goats 3.4x, cattle 1.7x, sheep 1.4x."
+    ],
+    "figure_file": "figures/q35_livestock_stocks.html",
+    "table_file": "tables/q35_livestock_stocks.csv",
+    "sql_file": "sql/questions/q35_livestock_stocks.sql",
+    "numbers": {}
+  }
+]

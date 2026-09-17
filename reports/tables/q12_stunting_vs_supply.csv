@@ -1,0 +1,137 @@
+area,region,year,des_adequacy_pct,stunting_pct,sanitation_basic_pct,water_basic_pct
+Armenia,Asia,2024,130.0,6.2,94.0,100.0
+Afghanistan,Asia,2024,108.0,42.0,54.0,81.0
+Albania,Europe,2024,131.0,7.4,99.0,95.0
+Algeria,Africa,2024,147.0,8.9,86.0,92.0
+Angola,Africa,2024,111.0,47.7,,68.0
+Argentina,Americas,2024,138.0,10.7,,
+Australia,Oceania,2024,142.0,3.1,100.0,100.0
+Barbados,Americas,2024,126.0,5.8,98.0,99.0
+Bangladesh,Asia,2024,115.0,25.1,68.0,99.0
+Bolivia (Plurinational State of),Americas,2024,102.0,10.7,72.0,93.0
+Botswana,Africa,2024,115.0,21.0,72.0,92.0
+Brazil,Americas,2024,138.0,8.9,92.0,100.0
+Belize,Americas,2024,122.0,11.7,84.0,95.0
+Solomon Islands,Oceania,2024,100.0,29.8,35.0,72.0
+Bulgaria,Europe,2024,123.0,5.5,86.0,99.0
+Myanmar,Asia,2024,123.0,24.5,74.0,86.0
+Cameroon,Africa,2024,126.0,27.2,47.0,71.0
+Cabo Verde,Africa,2024,116.0,5.3,83.0,92.0
+Sri Lanka,Asia,2024,119.0,10.1,95.0,90.0
+Chad,Africa,2024,96.0,31.5,13.0,52.0
+Chile,Americas,2024,124.0,1.7,100.0,99.0
+Colombia,Americas,2024,131.0,11.6,97.0,97.0
+Comoros,Africa,2024,108.0,17.4,57.0,85.0
+Congo,Africa,2024,99.0,16.3,,
+Costa Rica,Americas,2024,123.0,10.6,99.0,100.0
+Azerbaijan,Asia,2024,137.0,6.8,99.0,98.0
+Benin,Africa,2024,127.0,33.2,22.0,70.0
+Dominican Republic,Americas,2024,140.0,5.6,90.0,98.0
+Belarus,Europe,2024,140.0,1.1,100.0,100.0
+Ecuador,Americas,2024,113.0,17.7,91.0,92.0
+Egypt,Africa,2024,134.0,12.9,97.0,97.0
+El Salvador,Americas,2024,126.0,9.4,88.0,92.0
+Estonia,Europe,2024,131.0,1.3,99.0,100.0
+Fiji,Oceania,2024,124.0,7.2,93.0,96.0
+Finland,Europe,2024,132.0,1.7,99.0,100.0
+Djibouti,Africa,2024,113.0,20.9,,80.0
+Georgia,Asia,2024,124.0,4.7,91.0,97.0
+Gabon,Africa,2024,114.0,13.7,57.0,89.0
+Gambia,Africa,2024,105.0,14.0,48.0,87.0
+Germany,Europe,2024,142.0,2.2,99.0,100.0
+Bosnia and Herzegovina,Europe,2024,140.0,7.9,,96.0
+Ghana,Africa,2024,136.0,15.6,32.0,90.0
+Kiribati,Oceania,2024,136.0,14.7,45.0,79.0
+Greece,Europe,2024,134.0,2.0,99.0,100.0
+Guatemala,Americas,2024,127.0,44.6,71.0,93.0
+Guinea,Africa,2024,140.0,26.6,33.0,74.0
+Guyana,Americas,2024,145.0,7.1,91.0,96.0
+Haiti,Americas,2024,84.0,21.6,29.0,73.0
+Honduras,Americas,2024,114.0,17.9,88.0,96.0
+India,Asia,2024,116.0,32.9,83.0,96.0
+Indonesia,Asia,2024,126.0,22.6,88.0,89.0
+Iran (Islamic Republic of),Asia,2024,120.0,4.8,90.0,98.0
+Iraq,Asia,2024,118.0,9.4,98.0,98.0
+Ireland,Europe,2024,157.0,2.2,90.0,97.0
+Côte d'Ivoire,Africa,2024,130.0,20.3,40.0,77.0
+Kazakhstan,Asia,2024,134.0,4.4,98.0,98.0
+Jamaica,Americas,2024,116.0,6.9,92.0,88.0
+Jordan,Asia,2024,111.0,7.7,96.0,99.0
+Kyrgyzstan,Asia,2024,118.0,11.0,98.0,95.0
+Kenya,Africa,2024,94.0,17.9,41.0,66.0
+Democratic People's Republic of Korea,Asia,2018,84.0,19.6,84.0,94.0
+Republic of Korea,Asia,2024,138.0,1.8,100.0,100.0
+Latvia,Europe,2024,138.0,1.7,92.0,99.0
+Lao People's Democratic Republic,Asia,2024,109.0,29.9,89.0,96.0
+Lebanon,Asia,2024,119.0,10.1,99.0,93.0
+Liberia,Africa,2024,95.0,26.9,23.0,79.0
+Libya,Africa,2024,116.0,9.2,88.0,96.0
+Lithuania,Europe,2024,135.0,1.6,96.0,100.0
+Madagascar,Africa,2024,89.0,38.4,15.0,55.0
+Malawi,Africa,2024,114.0,33.2,49.0,73.0
+Malaysia,Asia,2024,123.0,24.3,96.0,98.0
+Mali,Africa,2024,126.0,23.2,48.0,86.0
+Malta,Europe,2024,133.0,3.5,100.0,100.0
+Mauritania,Africa,2024,130.0,21.5,59.0,77.0
+Mauritius,Africa,2024,135.0,7.8,97.0,100.0
+Mexico,Americas,2024,137.0,13.1,93.0,100.0
+Mongolia,Asia,2024,131.0,7.1,74.0,86.0
+Morocco,Africa,2024,139.0,13.7,88.0,92.0
+Mozambique,Africa,2024,102.0,37.0,39.0,67.0
+Republic of Moldova,Europe,2024,123.0,4.2,87.0,93.0
+Namibia,Africa,2024,109.0,16.4,39.0,86.0
+Nepal,Asia,2024,129.0,26.0,86.0,94.0
+Netherlands (Kingdom of the),Europe,2024,135.0,1.6,98.0,100.0
+North Macedonia,Europe,2024,141.0,3.8,99.0,98.0
+Vanuatu,Oceania,2024,137.0,31.0,48.0,87.0
+Niger,Africa,2024,123.0,48.3,16.0,53.0
+Nigeria,Africa,2024,109.0,33.8,48.0,82.0
+Pakistan,Asia,2024,113.0,33.6,72.0,91.0
+Panama,Americas,2024,134.0,14.0,89.0,95.0
+Czechia,Europe,2024,136.0,2.4,99.0,99.0
+Papua New Guinea,Oceania,2024,96.0,47.6,24.0,53.0
+Paraguay,Americas,2024,131.0,3.2,96.0,100.0
+Peru,Americas,2024,123.0,10.6,79.0,96.0
+Philippines,Asia,2024,129.0,27.7,87.0,96.0
+Poland,Europe,2024,151.0,1.0,99.0,90.0
+Portugal,Europe,2024,145.0,3.2,100.0,99.0
+Guinea-Bissau,Africa,2024,114.0,28.3,29.0,62.0
+Timor-Leste,Asia,2024,101.0,45.4,73.0,87.0
+Zimbabwe,Africa,2024,107.0,23.7,35.0,67.0
+Romania,Europe,2024,149.0,7.0,90.0,100.0
+Rwanda,Africa,2024,109.0,29.8,81.0,61.0
+Sao Tome and Principe,Africa,2024,99.0,10.0,49.0,78.0
+Saudi Arabia,Asia,2024,147.0,11.1,98.0,99.0
+Senegal,Africa,2024,123.0,17.2,62.0,88.0
+Sierra Leone,Africa,2024,106.0,25.2,25.0,68.0
+Somalia,Africa,2024,80.0,23.9,44.0,75.0
+South Africa,Africa,2024,111.0,24.4,77.0,90.0
+Suriname,Americas,2024,106.0,8.0,90.0,98.0
+Tajikistan,Asia,2024,121.0,13.1,,89.0
+Eswatini,Africa,2024,111.0,18.9,64.0,80.0
+Syrian Arab Republic,Asia,2024,94.0,23.5,96.0,94.0
+Turkmenistan,Asia,2024,123.0,6.5,100.0,100.0
+United Republic of Tanzania,Africa,2024,115.0,29.9,37.0,65.0
+Thailand,Asia,2024,114.0,12.3,99.0,100.0
+Togo,Africa,2024,117.0,23.0,25.0,65.0
+Trinidad and Tobago,Americas,2024,122.0,7.8,94.0,99.0
+Oman,Asia,2024,122.0,12.9,99.0,93.0
+Tunisia,Africa,2024,145.0,8.9,98.0,97.0
+Uganda,Africa,2024,109.0,23.5,24.0,63.0
+United Kingdom of Great Britain and Northern Ireland,Europe,2024,137.0,3.5,99.0,100.0
+Ukraine,Europe,2024,108.0,11.7,98.0,94.0
+United States of America,Americas,2024,154.0,4.2,100.0,100.0
+Burkina Faso,Africa,2024,124.0,19.5,32.0,50.0
+Uruguay,Americas,2024,134.0,6.5,99.0,100.0
+Uzbekistan,Asia,2024,142.0,6.7,96.0,97.0
+Venezuela (Bolivarian Republic of),Americas,2024,118.0,11.7,98.0,93.0
+Viet Nam,Asia,2024,131.0,19.2,95.0,99.0
+Ethiopia,Africa,2024,113.0,35.5,10.0,56.0
+Samoa,Oceania,2024,137.0,8.4,97.0,99.0
+Democratic Republic of the Congo,Africa,2024,97.0,44.1,16.0,36.0
+Zambia,Africa,2024,93.0,32.3,38.0,73.0
+Belgium,Europe,2024,156.0,2.6,100.0,100.0
+Serbia,Europe,2024,157.0,4.6,98.0,95.0
+Montenegro,Europe,2024,149.0,8.0,98.0,99.0
+Sudan,Africa,2021,118.0,34.2,57.0,62.0
+South Sudan,Africa,2024,108.0,30.0,14.0,40.0
