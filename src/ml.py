@@ -201,7 +201,7 @@ def yield_forecast(panel: pd.DataFrame) -> dict:
     return {"task": "One-step-ahead cereal yield (t/ha), countries with >= 20 kha harvested", "split": f"train < {split_year}, test >= {split_year}",
             "n_train": int(len(train)), "n_test": int(len(test)), "n_countries": int(data.area_code.nunique()), "features": feats,
             "models": results, "best": best, "top_features": importance.head(6).to_dict(orient="records"),
-            "forecast_year": last_year + 1, "n_forecast_countries": int(len(fc))}
+            "forecast_year": last_year + 1, "n_forecast_countries": int(len(fc))}, fig
 
 
 # ---------------------------------------------------------------------------
@@ -274,7 +274,7 @@ def risk_classifier(panel: pd.DataFrame) -> dict:
     return {"task": f"Classify country-years with prevalence of undernourishment >= {threshold:.0f} % from structural features only",
             "split": f"train < {split_year}, test >= {split_year}", "n_train": int(len(train)), "n_test": int(len(test)),
             "positive_rate_test": float(test.target.mean()), "features": feats, "models": results, "best": best,
-            "top_features": importance.head(6).to_dict(orient="records"), "n_scored_countries": int(len(scores))}
+            "top_features": importance.head(6).to_dict(orient="records"), "n_scored_countries": int(len(scores))}, fig
 
 
 # ---------------------------------------------------------------------------
@@ -330,7 +330,7 @@ def typology(panel: pd.DataFrame) -> dict:
     return {"task": "Cluster countries by latest food-system profile", "k": best_k, "silhouette_by_k": sil, "n_countries": int(len(latest)),
             "features": list(feats), "explained_variance_pc1_pc2": [float(v) for v in pca.explained_variance_ratio_],
             "clusters": [{"cluster": int(c), "name": names[c], "n": int((latest.cluster == c).sum()),
-                          "members": sorted(latest[latest.cluster == c].area.tolist())} for c in profile.index]}
+                          "members": sorted(latest[latest.cluster == c].area.tolist())} for c in profile.index]}, fig
 
 
 # ---------------------------------------------------------------------------
@@ -364,7 +364,7 @@ def projections(con: sqlite3.Connection, horizon: int = 2030) -> dict:
     pd.DataFrame(rows).to_csv(MODELS_DIR / "cereal_projections.csv", index=False)
     fig.update_layout(title=f"Cereal production by region: observed and log-linear projection to {horizon} (95 % prediction band)", yaxis_title="Mt", yaxis_type="log", hovermode="x unified")
     write_figure(fig, FIGURES_DIR / "ml_projections.html", title="ml_projections")
-    return {"task": f"Log-linear trend projection of regional cereal production to {horizon}", "fit_window": "2005 - latest", "regions": summary}
+    return {"task": f"Log-linear trend projection of regional cereal production to {horizon}", "fit_window": "2005 - latest", "regions": summary}, fig
 
 
 def run_all(db_path: Path = DB_PATH) -> dict:
@@ -386,13 +386,13 @@ def run_all(db_path: Path = DB_PATH) -> dict:
                                "The risk classifier threshold (PoU >= 15 %) is FAO's 'moderately high' boundary, chosen for "
                                "interpretability, not optimised for any decision cost."]}
     print("  yield forecast ...")
-    metrics["yield_forecast"] = yield_forecast(panel)
+    metrics["yield_forecast"], _ = yield_forecast(panel)
     print("  risk classifier ...")
-    metrics["risk_classifier"] = risk_classifier(panel)
+    metrics["risk_classifier"], _ = risk_classifier(panel)
     print("  typology ...")
-    metrics["typology"] = typology(panel)
+    metrics["typology"], _ = typology(panel)
     print("  projections ...")
-    metrics["projections"] = projections(con)
+    metrics["projections"], _ = projections(con)
     (MODELS_DIR / "metrics.json").write_text(json.dumps(metrics, indent=2))
     con.close()
     return metrics

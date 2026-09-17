@@ -14,9 +14,9 @@ SCRIPT_RE = re.compile(r'<script[^>]+src="(https?://[^"]+)"[^>]*>')
 
 def _emitted_html():
     files = sorted(FIGURES_DIR.glob("*.html")) + sorted((DOCS_DIR / "figures").glob("*.html"))
-    index = DOCS_DIR / "index.html"
-    if index.exists():
-        files.append(index)
+    for name in ("index.html", "notebook.html"):
+        if (DOCS_DIR / name).exists():
+            files.append(DOCS_DIR / name)
     return files
 
 

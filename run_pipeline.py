@@ -3,6 +3,7 @@
     python run_pipeline.py            # full build
     python run_pipeline.py --skip-extract   # reuse archives already in data/raw
     python run_pipeline.py --only analysis dashboard
+    python run_pipeline.py --skip-extract --skip-notebook   # everything except the executed notebook
 """
 from __future__ import annotations
 
@@ -13,19 +14,22 @@ import time
 from src import analysis, dashboard, extract, load, ml, quality
 from src.config import DB_PATH
 
-STAGES = ["extract", "load", "quality", "analysis", "ml", "dashboard"]
+STAGES = ["extract", "load", "quality", "analysis", "ml", "dashboard", "notebook"]
 
 
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--skip-extract", action="store_true", help="do not re-download FAOSTAT archives")
     ap.add_argument("--only", nargs="+", choices=STAGES, help="run only these stages")
+    ap.add_argument("--skip-notebook", action="store_true", help="do not execute the analysis notebook (needs requirements-apps.txt)")
     ap.add_argument("--update-pins", action="store_true",
                     help="accept archives whose hash differs from data/reference/archive_pins.json (new FAO release)")
     args = ap.parse_args()
     stages = args.only or STAGES
     if args.skip_extract and "extract" in stages:
         stages = [s for s in stages if s != "extract"]
+    if args.skip_notebook and "notebook" in stages:
+        stages = [s for s in stages if s != "notebook"]
     t0 = time.time()
     for stage in stages:
         print(f"\n== {stage} ==")
@@ -52,6 +56,9 @@ def main() -> int:
             ml.run_all()
         elif stage == "dashboard":
             dashboard.build()
+        elif stage == "notebook":
+            from src import notebook   # optional deps (nbclient, kaleido) - see requirements-apps.txt
+            notebook.build()
         print(f"  ({time.time() - ts:.0f}s)")
     print(f"\ndone in {time.time() - t0:.0f}s")
     return 0

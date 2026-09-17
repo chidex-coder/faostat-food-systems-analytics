@@ -6,8 +6,9 @@ answered in SQL with interactive Plotly figures, four predictive models, and a
 self-contained interactive dashboard.
 
 **Live dashboard:** https://chidex-coder.github.io/faostat-food-systems-analytics/
+**Notebook:** [notebooks/food_systems_analysis.ipynb](notebooks/food_systems_analysis.ipynb) ([interactive on nbviewer](https://nbviewer.org/github/chidex-coder/faostat-food-systems-analytics/blob/main/notebooks/food_systems_analysis.ipynb))
 **Written findings:** [reports/analysis_report.md](reports/analysis_report.md)
-**Model record:** [models/metrics.json](models/metrics.json)
+**Model record:** [models/metrics.json](models/metrics.json) · [models/MODEL_CARD.md](models/MODEL_CARD.md)
 
 ```
 FAOSTAT bulk archives ──► data/raw/*.zip (sha256 manifest)
@@ -24,6 +25,9 @@ sql/questions/*.sql ─────► reports/figures/*.html · reports/tables/
 src/ml.py ───────────────► models/*.csv · models/metrics.json · reports/figures/ml_*.html
         ▼
 src/dashboard.py ────────► docs/index.html (GitHub Pages)
+        ▼
+src/notebook.py ─────────► notebooks/food_systems_analysis.ipynb (executed) · docs/notebook.html
+apps/dash_app.py · apps/streamlit_app.py   optional front-ends over the same artefacts
 ```
 
 ## Quick start
@@ -36,12 +40,32 @@ python3.12 -m venv .venv && .venv/bin/pip install -r requirements.lock   # exact
 ```
 
 `run_pipeline.py --skip-extract` reuses archives already in `data/raw`;
-`--only analysis dashboard` re-runs individual stages. Downloaded archives are
+`--only analysis dashboard` re-runs individual stages; `--skip-notebook` skips
+executing the notebook (it needs `requirements-apps.txt`). Downloaded archives are
 checked against the reviewed hashes in `data/reference/archive_pins.json`; when
 FAO publishes a new release the build stops and asks for `--update-pins`.
 Setting `FAOSTAT_TOKEN`
 enables the REST client in `src/extract.py` (`FaostatApi`) for ad-hoc queries;
 the bulk archives remain the build path because they need no credentials.
+
+## Notebook and apps
+
+```bash
+.venv/bin/pip install -r requirements-apps.txt
+.venv/bin/python -m src.notebook                       # execute notebooks/food_systems_analysis.ipynb, export docs/notebook.html
+.venv/bin/jupyter lab notebooks/food_systems_analysis.ipynb
+.venv/bin/python apps/dash_app.py                      # Dash    → http://127.0.0.1:8767
+.venv/bin/streamlit run apps/streamlit_app.py --server.port 8768   # Streamlit
+```
+
+The notebook walks through the warehouse, all 35 questions (SQL shown, figure,
+generated findings), the four models and the dashboard, calling the same
+functions the pipeline runs. Figures are stored as Plotly JSON plus PNG, so they
+are interactive in Jupyter/nbviewer and visible on GitHub. The static HTML
+dashboard, the Dash app and the Streamlit app each have a **Notebook** tab
+linking to it and embedding the executed copy; the Dash and Streamlit apps are
+thin views over the committed artefacts (`reports/`, `models/`, `docs/`) and run
+without the 600 MB warehouse.
 
 ## What is in the warehouse
 
@@ -57,8 +81,7 @@ the bulk archives remain the build path because they need no credentials.
 | OA | Annual population | 81,901 | totals, urban/rural |
 | CAHD | Cost and affordability of a healthy diet | 6,894 | CoHD, share unable to afford |
 
-Geography comes from the UN M49 standard (`data/reference/          un_m49.csv (UN geography), archive_pins.json (reviewed FAO release hashes)
-SECURITY.md              controls, residual risks, publication boundary`), giving
+Geography comes from the UN M49 standard (`data/reference/un_m49.csv`), giving
 every country a region, sub-region and LDC / LLDC / SIDS flags.
 
 ---
@@ -241,10 +264,13 @@ src/ml.py                yield forecast, risk classifier, typology, projections
 src/viz.py               shared Plotly theme (entity-stable colours)
 src/web.py               pinned Plotly.js build + SRI hash, figure writer
 src/dashboard.py         packs data + template into docs/index.html
+src/notebook.py          builds, executes and exports the analysis notebook
+apps/                    common.py, dash_app.py, streamlit_app.py (Notebook tab in each)
+notebooks/               food_systems_analysis.ipynb (executed)
 sql/schema.sql, views.sql, indexes.sql, questions/*.sql
 reports/                 analysis_report.md, answers.json, figures/, tables/
 models/                  metrics.json, MODEL_CARD.md, predictions, importances, clusters, projections
-docs/                    dashboard (template.html → index.html), copied figures
+docs/                    dashboard (template.html → index.html), notebook.html, copied figures
 data/reference/          un_m49.csv (UN geography), archive_pins.json (reviewed FAO release hashes)
 SECURITY.md              controls, residual risks, publication boundary
 tests/

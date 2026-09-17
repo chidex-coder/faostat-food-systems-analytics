@@ -1,0 +1,9 @@
+# Optional front-ends and notebook tooling (the pipeline itself needs only requirements.txt)
+-r requirements.txt
+dash>=4.0
+streamlit>=1.40
+nbformat>=5.10
+nbclient>=0.10
+nbconvert>=7.16
+ipykernel>=6.29
+kaleido>=1.0
