@@ -10,24 +10,73 @@ self-contained interactive dashboard.
 **Written findings:** [reports/analysis_report.md](reports/analysis_report.md)
 **Model record:** [models/metrics.json](models/metrics.json) · [models/MODEL_CARD.md](models/MODEL_CARD.md)
 
+## 🏗️ Solution Architecture
+
 ```
-FAOSTAT bulk archives ──► data/raw/*.zip (sha256 manifest)
-        │  src/extract.py     resumable download, catalogue + ETag capture
-        ▼
-tidy frames ────────────► data/faostat.db (7.3 M rows, 9 domains)
-        │  src/transform.py   typing, year normalisation, flag handling, M49 geography
-        │  src/load.py        star-ish schema + views, sql/schema.sql, sql/views.sql
-        │  src/quality.py     dq_check gate (fails the build)
-        ▼
-sql/questions/*.sql ─────► reports/figures/*.html · reports/tables/*.csv · reports/analysis_report.md
-        │  src/analysis.py    35 questions, one figure + written findings each
-        ▼
-src/ml.py ───────────────► models/*.csv · models/metrics.json · reports/figures/ml_*.html
-        ▼
-src/dashboard.py ────────► docs/index.html (GitHub Pages)
-        ▼
-src/notebook.py ─────────► notebooks/food_systems_analysis.ipynb (executed) · docs/notebook.html
-apps/dash_app.py · apps/streamlit_app.py   optional front-ends over the same artefacts
+                  +----------------------------------+
+                  |   FAOSTAT Bulk Download Bucket   |
+                  |  9 domains · zipped normalised   |
+                  |  CSV · public · ETag-versioned   |
+                  +----------------+-----------------+
+                                   |
+                                   v
+                      Resumable Extractor (Python)
+                 Range resume · If-None-Match · SHA-256
+                 pinned release hashes · polite back-off
+                                   |
+                                   v
+                          Raw Archive Store
+                       data/raw/*.zip + manifest
+                                   |
+                                   v
+                    pandas Transformation Jobs
+        Typing · Year normalisation · Missing-flag drop
+        Dedup on key · UN M49 geography · Aggregate flag
+                                   |
+                                   v
+                        SQLite Warehouse (7.3 M rows)
+            +----------------------+----------------------+
+            |                      |                      |
+            v                      v                      v
+       dim_area              observation            dim_domain
+       dim_item        (domain, area, item,         dim_flag
+       dim_element      element, year) PK           dq_check
+            \                     |                      /
+             \                    |                     /
+              +-------------------+--------------------+
+                                  |
+                                  v
+                     Named Analytical Views
+        v_production · v_food_security · v_land · v_fertilizer
+        v_temperature · v_emissions · v_healthy_diet · v_price_usd
+                                  |
+                                  v
+                          Quality Gate (27 checks)
+                    integrity · plausibility · identity
+                       fail => build stops · warn => shown
+                                  |
+            +---------------------+---------------------+
+            |                                           |
+            v                                           v
+   35 SQL Questions                          scikit-learn Models
+   Plotly figures · findings          Yield forecast · Risk classifier
+   reports/ (tables, report.md)       Typology · 2030 projections
+            |                                           |
+            +---------------------+---------------------+
+                                  |
+                                  v
+                    Executed Jupyter Notebook
+              SQL · figures (Plotly + PNG) · models
+                                  |
+            +---------------------+---------------------+
+            |                     |                     |
+            v                     v                     v
+   Static HTML Dashboard      Dash App          Streamlit App
+   GitHub Pages · SRI-pinned  port 8767          port 8768
+   filters · maps · Notebook  (Notebook tab)     (Notebook tab)
+            |
+            v
+   Pytest Suite (16) · run_pipeline.py orchestrator
 ```
 
 ## Quick start
